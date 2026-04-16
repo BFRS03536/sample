@@ -1,0 +1,2810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Shiprocket — Vendor Onboarding Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  /* ── Midnight Orange (default) ── */
+  --bg:       #0A0D13;
+  --surface:  #0F1520;
+  --surface2: #161D2E;
+  --surface3: #1C2438;
+  --border:   #242E44;
+  --border2:  #182030;
+  --text:     #E8EEFF;
+  --muted:    #6A7A9B;
+  --muted2:   #3A4860;
+  --orange:   #FF6B35;
+  --orange-d: rgba(255,107,53,.14);
+  --orange-g: rgba(255,107,53,.32);
+  --orange-b: rgba(255,107,53,.06);
+  --green:    #34D399;
+  --green-d:  rgba(52,211,153,.13);
+  --red:      #F87171;
+  --red-d:    rgba(248,113,113,.13);
+  --amber:    #FBBF24;
+  --amber-d:  rgba(251,191,36,.13);
+  --blue:     #60A5FA;
+  --blue-d:   rgba(96,165,250,.13);
+  --purple:   #A78BFA;
+  --purple-d: rgba(167,139,250,.13);
+  --teal:     #2DD4BF;
+  --teal-d:   rgba(45,212,191,.13);
+  --pink:     #F472B6;
+  --pink-d:   rgba(244,114,182,.13);
+  --font: 'Sora', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --r: 8px;
+  --rl: 14px;
+  --sw: 234px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:13px;line-height:1.6;height:100vh;overflow:hidden;display:flex;-webkit-font-smoothing:antialiased;transition:background .4s,color .4s;}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(255,107,53,0.22);border-radius:3px;transition:background .3s;}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,107,53,0.45);}
+
+/* ── SIDEBAR ── */
+.sidebar{width:var(--sw);background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;transition:background .4s,border-color .4s;}
+.brand{padding:16px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.brand-mark{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff;flex-shrink:0;letter-spacing:-.5px;background:transparent;overflow:visible;}
+.brand-text{font-size:13px;font-weight:700;letter-spacing:-.3px;}
+.brand-sub{font-size:9px;color:var(--muted);margin-top:1px;letter-spacing:.3px;text-transform:uppercase;}
+.sub-switcher{margin:10px 10px 4px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:9px 11px;cursor:pointer;transition:.15s;}
+.sub-switcher:hover{border-color:var(--orange);box-shadow:0 0 0 1px rgba(var(--orange),0.2);}
+.ss-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px;}
+.ss-name{font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:space-between;}
+.ss-dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;margin-right:4px;}
+.ns{padding:10px 14px 3px;font-size:9px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.9px;}
+.ni{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:var(--r);margin:1px 6px;cursor:pointer;color:var(--muted);font-size:11px;font-weight:500;transition:.12s;position:relative;}
+.ni:hover{background:var(--surface2);color:var(--text);}
+.ni.on{background:var(--orange-d);color:var(--orange);}
+.ni.on::before{content:'';position:absolute;left:-6px;top:50%;transform:translateY(-50%);width:3px;height:16px;background:var(--orange);border-radius:2px;}
+.nicon{font-size:13px;width:18px;text-align:center;}
+.nbadge{margin-left:auto;background:var(--orange);color:#fff;border-radius:99px;font-size:9px;font-weight:700;padding:1px 6px;}
+.nbadge-green{background:var(--green);color:#0a0d13;}
+.sf{margin-top:auto;padding:11px 12px;border-top:1px solid var(--border);}
+.uc{display:flex;align-items:center;gap:8px;}
+.av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;}
+.av-o{background:var(--orange-d);color:var(--orange);border:1.5px solid var(--orange);}
+.av-b{background:var(--blue-d);color:var(--blue);border:1.5px solid var(--blue);}
+.av-g{background:var(--green-d);color:var(--green);border:1.5px solid var(--green);}
+.av-p{background:var(--purple-d);color:var(--purple);border:1.5px solid var(--purple);}
+.av-r{background:var(--red-d);color:var(--red);border:1.5px solid var(--red);}
+.ui{flex:1;min-width:0;}
+.un{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ur{font-size:9px;color:var(--muted);}
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{height:54px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 22px;flex-shrink:0;box-shadow:0 1px 0 rgba(255,107,53,0.07);transition:background .4s;}
+.tl{display:flex;align-items:center;gap:12px;}
+.pt{font-size:14px;font-weight:700;}
+.bc{font-size:10px;color:var(--muted);}
+.tr{display:flex;align-items:center;gap:10px;}
+.content{flex:1;overflow-y:auto;padding:20px;}
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:99px;font-size:10px;font-weight:600;white-space:nowrap;}
+.bg{background:var(--green-d);color:var(--green);border:1px solid rgba(52,211,153,.2);}
+.br{background:var(--red-d);color:var(--red);border:1px solid rgba(248,113,113,.2);}
+.ba{background:var(--amber-d);color:var(--amber);border:1px solid rgba(251,191,36,.2);}
+.bb{background:var(--blue-d);color:var(--blue);border:1px solid rgba(96,165,250,.2);}
+.bo{background:var(--orange-d);color:var(--orange);border:1px solid rgba(255,107,53,.2);}
+.bp{background:var(--purple-d);color:var(--purple);border:1px solid rgba(167,139,250,.2);}
+.bt{background:var(--teal-d);color:var(--teal);border:1px solid rgba(45,212,191,.2);}
+.bk{background:var(--pink-d);color:var(--pink);border:1px solid rgba(244,114,182,.2);}
+.bm{background:rgba(107,122,153,.1);color:var(--muted);border:1px solid rgba(107,122,153,.2);}
+/* ── CARDS ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;transition:border-color .2s,box-shadow .2s,background .4s;}
+.card:hover{border-color:rgba(255,107,53,.2);box-shadow:0 0 0 1px rgba(255,107,53,.06);}
+.ch{padding:13px 18px;border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;}
+.ct{font-size:12px;font-weight:600;display:flex;align-items:center;gap:7px;}
+.ci{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;}
+.cb{padding:16px 18px;}
+.ci-o{background:var(--orange-d);} .ci-b{background:var(--blue-d);} .ci-g{background:var(--green-d);}
+.ci-p{background:var(--purple-d);} .ci-a{background:var(--amber-d);} .ci-t{background:var(--teal-d);} .ci-pk{background:var(--pink-d);}
+/* ── BUTTONS ── */
+.btn{padding:7px 14px;border-radius:var(--r);font-size:11px;font-weight:600;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:5px;transition:.15s;font-family:var(--font);letter-spacing:.1px;}
+.btn-p{background:var(--orange);color:#fff;}
+.btn-p:hover{opacity:.88;box-shadow:0 4px 16px var(--orange-g);transform:translateY(-1px);}
+.btn-gh{background:transparent;color:var(--muted);border:1px solid var(--border);}
+.btn-gh:hover{background:var(--surface2);color:var(--text);}
+.btn-ok{background:var(--green-d);color:var(--green);border:1px solid rgba(52,211,153,.25);}
+.btn-ok:hover{background:rgba(52,211,153,.2);}
+.btn-ng{background:var(--red-d);color:var(--red);border:1px solid rgba(248,113,113,.25);}
+.btn-ng:hover{background:rgba(248,113,113,.2);}
+.btn-warn{background:var(--amber-d);color:var(--amber);border:1px solid rgba(251,191,36,.25);}
+.btn-warn:hover{background:rgba(251,191,36,.2);}
+.btn-blue{background:var(--blue-d);color:var(--blue);border:1px solid rgba(96,165,250,.25);}
+.btn-blue:hover{background:rgba(96,165,250,.2);}
+.btn-sm{padding:4px 10px;font-size:10px;}
+.btn-icon{width:30px;height:30px;padding:0;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:14px;}
+/* ── INPUTS ── */
+input,select,textarea{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-family:var(--font);font-size:12px;padding:7px 10px;outline:none;transition:.12s;width:100%;}
+input:focus,select:focus,textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px var(--orange-d);}
+input::placeholder{color:var(--muted2);}select option{background:var(--surface2);}
+label.fl{font-size:10px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px;}
+.req{color:var(--orange);}
+/* ── TOGGLE ── */
+.tgl{position:relative;width:40px;height:22px;flex-shrink:0;cursor:pointer;}
+.tgl input{opacity:0;width:0;height:0;position:absolute;}
+.tgl-track{position:absolute;inset:0;background:var(--border);border-radius:11px;transition:.25s;}
+.tgl input:checked~.tgl-track{background:var(--orange);}
+.tgl-thumb{position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:3px;left:3px;transition:.25s;pointer-events:none;z-index:1;}
+.tgl input:checked~.tgl-thumb{transform:translateX(18px);}
+.tgl.green input:checked~.tgl-track{background:var(--green);}
+.tgl.blue input:checked~.tgl-track{background:var(--blue);}
+/* ── TABLES ── */
+.tw{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+thead th{padding:9px 14px;font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;text-align:left;background:var(--surface2);border-bottom:1px solid var(--border);white-space:nowrap;}
+tbody tr{border-bottom:1px solid var(--border2);transition:.1s;cursor:pointer;}
+tbody tr:hover{background:rgba(255,107,53,0.05);}
+tbody tr:last-child{border:none;}
+td{padding:10px 14px;vertical-align:middle;}
+.tn{font-weight:600;font-size:12px;}
+.ts2{font-size:10px;color:var(--muted);margin-top:1px;}
+.tm{font-family:var(--mono);font-size:10px;color:var(--muted);}
+/* ── GRIDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
+.full{grid-column:1/-1;}
+/* ── STAT CARDS ── */
+.sc{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:16px 18px;transition:.2s;position:relative;overflow:hidden;}
+.sc:hover{border-color:rgba(255,107,53,.35);transform:translateY(-1px);box-shadow:0 0 0 1px rgba(255,107,53,.1),0 8px 24px rgba(0,0,0,.3);}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--orange),transparent);opacity:0;transition:.3s;}
+.sc:hover::before{opacity:1;}
+.sn{font-size:22px;font-weight:700;letter-spacing:-1px;margin-bottom:2px;}
+.sl{font-size:9px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+.sd{font-size:10px;margin-top:3px;}
+/* ── VIEWS ── */
+.view{display:none;}
+.view.on{display:block;animation:fadeUp .2s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+/* ── MODALS ── */
+.overlay{position:fixed;inset:0;background:rgba(5,8,16,.82);z-index:400;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px);}
+.overlay.open{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);max-height:88vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,.7);animation:fadeUp .2s ease;transition:background .3s;}
+.m-sm{width:480px;} .m-md{width:620px;} .m-lg{width:820px;} .m-xl{width:960px;}
+.mh{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.mtitle{font-size:14px;font-weight:700;}
+.mb{padding:22px;}
+.mf{padding:14px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;}
+.xbtn{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;line-height:1;}
+.xbtn:hover{color:var(--text);}
+/* ── SIDE PANEL ── */
+.spanel{position:fixed;right:0;top:0;bottom:0;width:500px;background:var(--surface);border-left:1px solid var(--border);z-index:300;display:flex;flex-direction:column;transform:translateX(100%);transition:.3s cubic-bezier(.4,0,.2,1);box-shadow:-20px 0 60px rgba(0,0,0,.5);}
+.spanel.open{transform:translateX(0);box-shadow:-8px 0 48px var(--orange-g),-2px 0 16px rgba(0,0,0,.4);}
+.sph{padding:17px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.spb{flex:1;overflow-y:auto;padding:18px 20px;}
+.spf{padding:13px 20px;border-top:1px solid var(--border);display:flex;gap:8px;flex-shrink:0;}
+/* ── FIELD ROWS ── */
+.fr{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border2);}
+.fr:last-child{border:none;}
+.frl{font-size:10px;color:var(--muted);}
+.frv{font-size:11px;font-weight:600;text-align:right;}
+.frv.ok{color:var(--green);} .frv.warn{color:var(--amber);} .frv.bad{color:var(--red);} .frv.mono{font-family:var(--mono);font-size:10px;}
+/* ── LABELS ── */
+.slabel{font-size:9px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.9px;margin:16px 0 7px;}
+/* ── INTEGRATION CARD ── */
+.int-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rl);padding:18px;transition:.2s;position:relative;overflow:hidden;}
+.int-card:hover{border-color:var(--muted2);}
+.int-card.active-int{border-color:rgba(255,107,53,.3);box-shadow:0 0 0 1px rgba(255,107,53,.08);}
+.int-card.disabled-int{opacity:.55;}
+.int-logo{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:12px;}
+.int-name{font-size:13px;font-weight:700;margin-bottom:3px;}
+.int-desc{font-size:11px;color:var(--muted);line-height:1.5;margin-bottom:12px;}
+.int-status-row{display:flex;align-items:center;justify-content:space-between;}
+.int-meta{font-size:10px;color:var(--muted);}
+.int-pulse{position:absolute;top:14px;right:14px;width:8px;height:8px;border-radius:50%;}
+.int-pulse.live{background:var(--green);} .int-pulse.off{background:var(--muted2);} .int-pulse.warn{background:var(--amber);}
+/* ── DEPT TAGS ── */
+.dept-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:99px;font-size:10px;font-weight:600;cursor:pointer;border:1px solid transparent;transition:.12s;}
+.dept-tag:hover{border-color:var(--muted2);}
+.dt-selected{border-color:var(--orange)!important;background:var(--orange-d)!important;color:var(--orange)!important;}
+.dt-blue{background:var(--blue-d);color:var(--blue);border-color:rgba(96,165,250,.2);}
+.dt-green{background:var(--green-d);color:var(--green);border-color:rgba(52,211,153,.2);}
+.dt-purple{background:var(--purple-d);color:var(--purple);border-color:rgba(167,139,250,.2);}
+.dt-teal{background:var(--teal-d);color:var(--teal);border-color:rgba(45,212,191,.2);}
+.dt-pink{background:var(--pink-d);color:var(--pink);border-color:rgba(244,114,182,.2);}
+.dt-amber{background:var(--amber-d);color:var(--amber);border-color:rgba(251,191,36,.2);}
+/* ── PROGRESS ── */
+.prog{height:5px;background:var(--border);border-radius:99px;overflow:hidden;}
+.pf{height:100%;border-radius:99px;}
+.pfg{background:linear-gradient(90deg,#2DC98C,#34D399);}
+.pfa{background:linear-gradient(90deg,#E8A800,#FBBF24);}
+.pfr{background:linear-gradient(90deg,#E85555,#F87171);}
+.pfo{background:linear-gradient(90deg,var(--orange),rgba(255,140,90,0.9));}
+/* ── PERM TABLE ── */
+.ptbl{width:100%;border-collapse:collapse;}
+.ptbl th{padding:9px 12px;font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;text-align:center;background:var(--surface2);border:1px solid var(--border2);}
+.ptbl th:first-child{text-align:left;}
+.ptbl td{padding:9px 12px;border:1px solid var(--border2);text-align:center;font-size:11px;}
+.ptbl td:first-child{text-align:left;font-weight:500;}
+.ptbl tr:hover td{background:var(--surface2);}
+/* ── NS CARD ── */
+.ns-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rl);padding:16px;display:flex;align-items:center;gap:14px;transition:.15s;}
+.ns-card:hover{border-color:rgba(255,107,53,.2);background:rgba(255,107,53,.04);}
+.ns-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.ns-info{flex:1;}
+.ns-name{font-size:13px;font-weight:700;margin-bottom:2px;}
+.ns-meta{font-size:10px;color:var(--muted);}
+/* ── TRAIL ── */
+.ast{display:flex;gap:11px;position:relative;padding-bottom:16px;}
+.ast::after{content:'';position:absolute;left:12px;top:28px;bottom:0;width:1px;background:var(--border2);}
+.ast:last-child::after{display:none;}
+.adot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;}
+.ad-done{background:var(--green-d);color:var(--green);border:1.5px solid var(--green);}
+.ad-act{background:var(--amber-d);color:var(--amber);border:1.5px solid var(--amber);}
+.ad-idle{background:var(--surface2);color:var(--muted2);border:1.5px solid var(--border);}
+.ad-urg{background:var(--orange-d);color:var(--orange);border:1.5px solid var(--orange);}
+.ainfo{flex:1;}
+.atitle{font-size:11px;font-weight:600;margin-bottom:1px;}
+.ameta{font-size:10px;color:var(--muted);}
+.acmt{margin-top:5px;font-size:10px;color:var(--muted);background:var(--surface2);padding:6px 9px;border-radius:5px;border-left:2px solid var(--orange);}
+/* ── TOAST ── */
+.toast{position:fixed;bottom:22px;right:22px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--orange);color:var(--text);padding:11px 16px;border-radius:var(--rl);font-size:11px;font-weight:600;display:flex;align-items:center;gap:9px;box-shadow:0 16px 48px rgba(0,0,0,.6);transform:translateY(70px);opacity:0;transition:.3s cubic-bezier(.4,0,.2,1);z-index:999;}
+.toast.show{transform:translateY(0);opacity:1;}
+.tdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+/* ── FILTER ── */
+.fbar{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.sbox{position:relative;flex:1;min-width:180px;}
+.sbox input{padding-left:30px;}
+.sicon{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px;pointer-events:none;}
+.fsel{width:auto;min-width:120px;}
+/* ── CONFIRM ── */
+.confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:600;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px);}
+.confirm-overlay.open{display:flex;}
+.confirm-box{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--orange);border-radius:var(--rl);padding:28px;width:400px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.7);}
+.confirm-icon{font-size:36px;margin-bottom:12px;}
+.confirm-title{font-size:16px;font-weight:700;margin-bottom:6px;}
+.confirm-msg{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:20px;}
+.confirm-btns{display:flex;gap:10px;justify-content:center;}
+/* ── MAP CHIP ── */
+.map-chip{display:inline-flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border);border-radius:99px;padding:4px 10px;font-size:10px;font-weight:500;}
+.map-chip .remove{cursor:pointer;color:var(--muted);transition:.1s;line-height:1;}
+.map-chip .remove:hover{color:var(--red);}
+/* ── ANIMATIONS ── */
+.a1{animation:fadeUp .2s ease both;}
+.a2{animation:fadeUp .2s ease .05s both;}
+.a3{animation:fadeUp .2s ease .10s both;}
+.a4{animation:fadeUp .2s ease .15s both;}
+/* ── THEME SWITCHER ── */
+
+/* ══ THEME SWITCHER ══ */
+.theme-card {
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all .2s;
+  position: relative;
+}
+.theme-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+.theme-card.tc-selected { box-shadow: 0 0 0 2px var(--orange), 0 8px 24px rgba(0,0,0,0.4); }
+.tc-preview {
+  height: 88px;
+  position: relative;
+  overflow: hidden;
+}
+.tc-sb {
+  position: absolute; left:0; top:0; bottom:0; width:30%;
+  display: flex; flex-direction:column; gap:4px; padding:8px 5px;
+}
+.tc-nd { height: 5px; border-radius: 3px; }
+.tc-main-area {
+  position: absolute; left:30%; right:0; top:0; bottom:0;
+  padding: 7px; display:flex; flex-direction:column; gap:3px;
+}
+.tc-stat-r { display:flex; gap:3px; }
+.tc-stat-b { flex:1; height:20px; border-radius:4px; }
+.tc-row { height: 7px; border-radius:2px; margin:1px 0; }
+.tc-info { padding: 10px 12px; }
+.tc-name { font-size: 12px; font-weight: 700; margin-bottom: 2px; }
+.tc-desc { font-size: 10px; opacity: .65; line-height: 1.4; }
+.tc-check {
+  position: absolute; top:8px; right:8px;
+  width:18px; height:18px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:10px; font-weight:700;
+  opacity:0; transition: opacity .2s;
+}
+.theme-card.tc-selected .tc-check { opacity:1; }
+
+/* ── SIDEBAR GLOW ── */
+@keyframes brand-glow{0%,100%{box-shadow:0 0 14px rgba(255,107,53,.4),0 0 28px rgba(255,107,53,.12);}50%{box-shadow:0 0 22px rgba(255,107,53,.65),0 0 44px rgba(255,107,53,.22);}}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.6;transform:scale(0.8);}}
+.int-pulse.live{animation:pulse-dot 1.8s ease-in-out infinite;}
+@keyframes sidebar-line{0%,100%{opacity:.18;}50%{opacity:.35;}}
+</style>
+</head>
+<body>
+
+
+<!-- ═══════════ SIDEBAR ═══════════ -->
+<div class="sidebar">
+  <div class="brand">
+    <div class="brand-mark" style="background:none;padding:0;overflow:visible;box-shadow:none;animation:none;">
+<svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="34" height="34" rx="8" fill="url(#sr-grad)"/>
+  <defs>
+    <linearGradient id="sr-grad" x1="0" y1="0" x2="34" y2="34" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF8C5A"/>
+      <stop offset="100%" stop-color="#E8501A"/>
+    </linearGradient>
+  </defs>
+  <!-- Rocket body -->
+  <path d="M17 5C17 5 22.5 8.5 22.5 16C22.5 20.5 20 23 17 25C14 23 11.5 20.5 11.5 16C11.5 8.5 17 5 17 5Z" fill="white" opacity="0.95"/>
+  <!-- Rocket fins left -->
+  <path d="M11.5 18L8 22L11.5 21V18Z" fill="white" opacity="0.7"/>
+  <!-- Rocket fins right -->
+  <path d="M22.5 18L26 22L22.5 21V18Z" fill="white" opacity="0.7"/>
+  <!-- Exhaust flame -->
+  <path d="M15 25.5C15 25.5 15.5 28 17 29.5C18.5 28 19 25.5 19 25.5" stroke="white" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.6"/>
+  <!-- Window circle -->
+  <circle cx="17" cy="15.5" r="2.2" fill="url(#sr-grad)" stroke="white" stroke-width="1"/>
+</svg>
+</div>
+    <div>
+      <div class="brand-text">Shiprocket</div>
+      <div class="brand-sub" id="brand-theme-label">Midnight Orange · v3.1</div>
+    </div>
+  </div>
+
+  <div class="sub-switcher" onclick="nav(null,'subsidiaries')">
+    <div class="ss-label">Active Subsidiary</div>
+    <div class="ss-name"><span><span class="ss-dot"></span><span id="sb-name">Shiprocket Limited</span></span><span style="font-size:10px;color:var(--muted)">⇅</span></div>
+    <div style="font-size:9px;color:var(--muted);margin-top:2px;" id="sb-loc">📍 Gurugram, HQ</div>
+  </div>
+
+  <div class="ns">Main</div>
+  <div class="ni on" onclick="nav(this,'dashboard')"><span class="nicon">▦</span>Dashboard</div>
+  <div class="ni" onclick="nav(this,'vendors')"><span class="nicon">🏭</span>Vendor List <span class="nbadge" id="nb-pending">23</span></div>
+  <div class="ni" onclick="nav(this,'subsidiaries')"><span class="nicon">🏢</span>Subsidiaries</div>
+
+  <div class="ns">Master Data</div>
+  <div class="ni" onclick="nav(this,'masterdata')"><span class="nicon">🗄</span>Master Data Mgmt</div>
+  <div class="ni" onclick="nav(this,'departments')"><span class="nicon">🏷</span>Department Mapping</div>
+
+  <div class="ns">Administration</div>
+  <div class="ni" onclick="nav(this,'users')"><span class="nicon">👥</span>Users &amp; Roles</div>
+  <div class="ni" onclick="nav(this,'permissions')"><span class="nicon">🔐</span>Permissions</div>
+
+  <div class="ns">Integrations</div>
+  <div class="ni" onclick="nav(this,'integrations')"><span class="nicon">⚡</span>Accounting Systems <span class="nbadge-green nbadge">3</span></div>
+
+  <div class="ns">Analytics</div>
+  <div class="ni" onclick="nav(this,'reports')"><span class="nicon">📊</span>Reports &amp; Analytics</div>
+  <div class="ni" onclick="nav(this,'auditlog')"><span class="nicon">📋</span>Audit Log</div>
+  <div class="ni" onclick="nav(this,'notifications')"><span class="nicon">🔔</span>Notifications <span id="notif-badge" class="nbadge">4</span></div>
+  <div class="ns">Config</div>
+  <div class="ni" onclick="nav(this,'settings')"><span class="nicon">⚙</span>Portal Settings</div>
+  <div class="ni" onclick="openModal('theme-modal')" id="theme-nav-item"><span class="nicon">🎨</span>Theme <span id="theme-dot" style="width:8px;height:8px;border-radius:50%;background:var(--orange);margin-left:auto;box-shadow:0 0 6px var(--orange);"></span></div>
+
+  <div class="sf">
+    <div class="uc">
+      <div class="av av-b" id="sb-av">RK</div>
+      <div class="ui">
+        <div class="un" id="sb-uname">Rahul Kumar</div>
+        <div class="ur" id="sb-urole">Finance SPOC</div>
+      </div>
+      <div style="cursor:pointer;color:var(--muted);font-size:11px;" onclick="openModal('role-modal')">⇄</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ MAIN ═══════════ -->
+<div class="main">
+  <div class="topbar">
+    <div class="tl">
+      <div class="pt" id="pt">Dashboard</div>
+      <div class="bc">Portal › <span id="bc">Overview</span></div>
+    </div>
+    <div class="tr">
+      <span class="badge bo" id="tb-sub">Shiprocket Limited</span>
+      <span class="badge bb" id="tb-role">Finance SPOC</span>
+      <button class="btn btn-p btn-sm" onclick="openModal('initiate-modal')">+ Initiate Vendor</button>
+      <button class="btn btn-gh btn-sm" onclick="openModal('theme-modal')" style="border-color:var(--orange);color:var(--orange);" title="Switch theme">🎨</button>
+      <div class="av av-b" id="tb-av" style="cursor:pointer;" onclick="openModal('role-modal')">RK</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ DASHBOARD ══ -->
+    <div class="view on" id="view-dashboard">
+      <!-- ══ STATS RIBBON ══ -->
+      <div class="g5 a1" style="margin-bottom:18px;" id="stats-ribbon">
+        <div class="sc sc-clickable" id="sc-total" onclick="openStatDrill('total')">
+          <div class="sc-top-bar" style="background:var(--muted);"></div>
+          <div class="sc-inner">
+            <div class="sn" id="sn-total">142</div>
+            <div class="sl">Total Vendors</div>
+            <div class="sd" style="color:var(--green)">↑ 18 this month</div>
+          </div>
+          <div class="sc-arrow">›</div>
+        </div>
+        <div class="sc sc-clickable" id="sc-pending" onclick="openStatDrill('pending')">
+          <div class="sc-top-bar" style="background:var(--amber);"></div>
+          <div class="sc-inner">
+            <div class="sn" id="sn-pending" style="color:var(--amber)">23</div>
+            <div class="sl">Pending Review</div>
+            <div class="sd" style="color:var(--red)">↑ 5 today</div>
+          </div>
+          <div class="sc-arrow" style="color:var(--amber)">›</div>
+        </div>
+        <div class="sc sc-clickable sc-approved" id="sc-approved" onclick="openStatDrill('approved')">
+          <div class="sc-top-bar" style="background:var(--green);"></div>
+          <div class="sc-inner">
+            <div class="sn" id="sn-approved" style="color:var(--green)">108</div>
+            <div class="sl">Approved</div>
+            <div class="sd" style="color:var(--green)">↑ 12 this month</div>
+          </div>
+          <div class="sc-arrow" style="color:var(--green)">›</div>
+        </div>
+        <div class="sc sc-clickable" id="sc-rejected" onclick="openStatDrill('rejected')">
+          <div class="sc-top-bar" style="background:var(--red);"></div>
+          <div class="sc-inner">
+            <div class="sn" id="sn-rejected" style="color:var(--red)">11</div>
+            <div class="sl">Rejected</div>
+            <div class="sd">Stable</div>
+          </div>
+          <div class="sc-arrow" style="color:var(--red)">›</div>
+        </div>
+        <div class="sc sc-clickable" id="sc-escalated" onclick="openStatDrill('escalated')">
+          <div class="sc-top-bar" style="background:var(--orange);"></div>
+          <div class="sc-inner">
+            <div class="sn" id="sn-escalated" style="color:var(--orange)">3</div>
+            <div class="sl">AVP Escalated</div>
+            <div class="sd" style="color:var(--orange)">Urgent action needed</div>
+          </div>
+          <div class="sc-arrow" style="color:var(--orange)">›</div>
+        </div>
+      </div>
+
+      <!-- ══ STAT DRILL-DOWN PANEL ══ -->
+      <div id="stat-drill-wrap" style="display:none;margin-bottom:18px;" class="a1">
+        <div id="stat-drill-panel" style="
+          background:var(--surface);
+          border:1px solid var(--border);
+          border-radius:14px;
+          overflow:hidden;
+          animation:fadeUp .22s ease;
+        ">
+          <!-- Panel header -->
+          <div style="padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div id="drill-icon" style="width:28px;height:28px;border-radius:8px;background:var(--green-d);display:flex;align-items:center;justify-content:center;font-size:13px;">✓</div>
+              <div>
+                <div id="drill-title" style="font-size:13px;font-weight:700;">Approved Vendors</div>
+                <div id="drill-subtitle" style="font-size:10px;color:var(--muted);">All vendors with final approval — synced to NetSuite</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div id="drill-count-badge" style="font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;background:var(--green-d);color:var(--green);border:1px solid rgba(52,211,153,.2);">108 vendors</div>
+              <input type="text" id="drill-search" placeholder="Search…" style="width:160px;font-size:11px;padding:5px 10px;" oninput="filterDrill(this.value)"/>
+              <button onclick="closeDrill()" style="background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;line-height:1;font-family:var(--font);">✕</button>
+            </div>
+          </div>
+
+          <!-- Summary chips row -->
+          <div id="drill-chips" style="padding:10px 20px;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--border);background:var(--surface2);"></div>
+
+          <!-- Vendor table -->
+          <div style="overflow-x:auto;max-height:340px;overflow-y:auto;">
+            <table style="width:100%;border-collapse:collapse;">
+              <thead id="drill-thead"></thead>
+              <tbody id="drill-tbody"></tbody>
+            </table>
+          </div>
+
+          <!-- Footer actions -->
+          <div id="drill-footer" style="padding:11px 20px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--surface2);">
+            <div id="drill-footer-left" style="font-size:11px;color:var(--muted);"></div>
+            <div style="display:flex;gap:8px;" id="drill-footer-actions"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="g2 a2">
+        <div class="card">
+          <div class="ch"><div class="ct"><div class="ci ci-a">⏳</div>Action Queue</div><span class="badge ba">3 urgent</span></div>
+          <div class="tw">
+            <table><thead><tr><th>Vendor</th><th>Dept Tagged</th><th>Stage</th><th>%</th><th></th></tr></thead>
+            <tbody>
+              <tr onclick="openVendorPanel(0)"><td><div class="tn">Quantum Freight Solutions</div><div class="ts2 tm">VRF-2024-0143</div></td><td><span class="dept-tag dt-blue">Procurement</span></td><td><span class="badge ba">Finance L2</span></td><td><span style="color:var(--amber);font-size:11px;font-weight:700;">82%</span></td><td><button class="btn btn-gh btn-sm">View</button></td></tr>
+              <tr onclick="openVendorPanel(1)"><td><div class="tn">BlueDart Express Ltd</div><div class="ts2 tm">VRF-2024-0141</div></td><td><span class="dept-tag dt-purple">Logistics</span></td><td><span class="badge bo">AVP ⚡</span></td><td><span style="color:var(--amber);font-size:11px;font-weight:700;">70%</span></td><td><button class="btn btn-gh btn-sm">View</button></td></tr>
+              <tr onclick="openVendorPanel(2)"><td><div class="tn">Mehta Packaging Co.</div><div class="ts2 tm">VRF-2024-0139</div></td><td><span class="dept-tag dt-teal">Operations</span></td><td><span class="badge bb">Dept SPOC</span></td><td><span style="color:var(--green);font-size:11px;font-weight:700;">95%</span></td><td><button class="btn btn-gh btn-sm">View</button></td></tr>
+            </tbody></table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="ch"><div class="ct"><div class="ci ci-t">⚡</div>Integration Status</div></div>
+          <div class="cb" style="display:flex;flex-direction:column;gap:10px;">
+            <div class="ns-card" style="cursor:pointer;" onclick="nav(null,'integrations')">
+              <div class="ns-icon" style="background:var(--blue-d);">🔷</div>
+              <div class="ns-info"><div class="ns-name">NetSuite ERP</div><div class="ns-meta">Account 7094576 · 142 vendors synced</div></div>
+              <div id="ns-status-dot" class="int-pulse live"></div>
+              <label class="tgl" onclick="event.stopPropagation()"><input type="checkbox" id="ns-master-toggle" checked onchange="toggleNS(this.checked)"/><div class="tgl-track"></div><div class="tgl-thumb"></div></label>
+            </div>
+            <div class="ns-card" style="cursor:pointer;" onclick="nav(null,'integrations')">
+              <div class="ns-icon" style="background:var(--green-d);">📗</div>
+              <div class="ns-info"><div class="ns-name">Tally Prime</div><div class="ns-meta">Connected · 38 vendors</div></div>
+              <div class="int-pulse live"></div>
+              <label class="tgl green" onclick="event.stopPropagation()"><input type="checkbox" checked/><div class="tgl-track"></div><div class="tgl-thumb"></div></label>
+            </div>
+            <div class="ns-card" style="cursor:pointer;" onclick="nav(null,'integrations')">
+              <div class="ns-icon" style="background:var(--purple-d);">🔮</div>
+              <div class="ns-info"><div class="ns-name">Zoho Books</div><div class="ns-meta">Not connected</div></div>
+              <div class="int-pulse off"></div>
+              <button class="btn btn-gh btn-sm" onclick="event.stopPropagation();openModal('add-int-modal')">Connect</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ VENDOR LIST ══ -->
+    <div class="view" id="view-vendors">
+      <div class="fbar a1">
+        <div class="sbox"><span class="sicon">🔍</span><input placeholder="Search vendor, VRF, PAN, GST…" oninput="filterVendors()"/></div>
+        <select class="fsel" id="f-status" onchange="filterVendors()"><option value="">All Status</option><option>Approved</option><option>Pending</option><option>Rejected</option><option>Escalated</option></select>
+        <select class="fsel" id="f-dept" onchange="filterVendors()"><option value="">All Depts</option><option>Procurement</option><option>Logistics</option><option>Operations</option><option>Finance</option><option>Technology</option></select>
+        <select class="fsel" id="f-sub" onchange="filterVendors()"><option value="">All Subs</option><option>SR Limited</option><option>SR Internet</option><option>WS Retail</option></select>
+        <button class="btn btn-gh btn-sm" onclick="toast('Exporting CSV…','amber')">⬇ Export</button>
+        <button class="btn btn-p btn-sm" onclick="openModal('initiate-modal')">+ Initiate</button>
+      </div>
+      <div class="card a2">
+        <div class="ch"><div class="ct"><div class="ci ci-o">🏭</div>Vendor List <span style="color:var(--muted);font-weight:400;font-size:10px;" id="v-count">(12)</span></div></div>
+        <div class="tw"><table><thead><tr><th><input type="checkbox" style="width:auto;"/></th><th>Vendor</th><th>Department Tag</th><th>Subsidiary</th><th>Entity</th><th>Stage</th><th>Completeness</th><th>Status</th><th></th></tr></thead><tbody id="v-tbody"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- ══ SUBSIDIARIES ══ -->
+    <div class="view" id="view-subsidiaries">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;" class="a1">
+        <div><div style="font-size:16px;font-weight:700;margin-bottom:3px;">Subsidiary Portals</div><div style="font-size:11px;color:var(--muted);">Each subsidiary is isolated with its own approval chain, NetSuite entity, and vendor list.</div></div>
+        <button class="btn btn-p btn-sm" onclick="openModal('add-sub-modal')">+ Add Subsidiary</button>
+      </div>
+      <div id="sub-grid" class="a2" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;"></div>
+    </div>
+
+    <!-- ══ MASTER DATA MANAGEMENT ══ -->
+    <div class="view" id="view-masterdata">
+      <div class="a1" style="margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;">
+        <div><div style="font-size:16px;font-weight:700;margin-bottom:3px;">Master Data Management</div><div style="font-size:11px;color:var(--muted);">Centrally manage subsidiaries, departments, entity types, vendor categories and approval chains.</div></div>
+      </div>
+
+      <div class="g2 a2" style="margin-bottom:16px;">
+        <!-- SUBSIDIARY MASTER -->
+        <div class="card">
+          <div class="ch"><div class="ct"><div class="ci ci-o">🏢</div>Subsidiaries</div><button class="btn btn-p btn-sm" onclick="openModal('add-sub-modal')">+ Add</button></div>
+          <div class="tw">
+            <table id="sub-master-table">
+              <thead><tr><th>Name</th><th>Location</th><th>NS Entity</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="sub-master-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- DEPARTMENT MASTER -->
+        <div class="card">
+          <div class="ch"><div class="ct"><div class="ci ci-b">🏷</div>Departments</div><button class="btn btn-p btn-sm" onclick="openModal('add-dept-modal')">+ Add</button></div>
+          <div class="tw">
+            <table>
+              <thead><tr><th>Department</th><th>Head / SPOC</th><th>Vendors</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="dept-master-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="g2 a3">
+        <!-- ENTITY TYPES -->
+        <div class="card">
+          <div class="ch"><div class="ct"><div class="ci ci-p">📋</div>Entity Types</div><button class="btn btn-gh btn-sm" onclick="openModal('add-entity-modal')">+ Add</button></div>
+          <div class="cb" id="entity-list" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+        </div>
+
+        <!-- VENDOR CATEGORIES -->
+        <div class="card">
+          <div class="ch"><div class="ct"><div class="ci ci-t">🏷</div>Vendor Categories</div><button class="btn btn-gh btn-sm" onclick="openModal('add-cat-modal')">+ Add</button></div>
+          <div class="cb" id="cat-list" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ DEPARTMENT MAPPING ══ -->
+    <div class="view" id="view-departments">
+      <div class="a1" style="margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;">
+        <div><div style="font-size:16px;font-weight:700;margin-bottom:3px;">Department Mapping</div><div style="font-size:11px;color:var(--muted);">Finance SPOC tags each vendor to a department before sending to Level 2 approval. Dept SPOC for that department receives L1 magic link.</div></div>
+        <button class="btn btn-p btn-sm" onclick="openModal('map-dept-modal')">Map Vendor → Dept</button>
+      </div>
+
+      <!-- Dept mapping visual -->
+      <div class="g3 a2" style="margin-bottom:16px;" id="dept-map-cards"></div>
+
+      <div class="card a3">
+        <div class="ch"><div class="ct"><div class="ci ci-o">🔗</div>Pending Department Mapping</div><span class="badge ba">5 untagged</span></div>
+        <div class="tw">
+          <table>
+            <thead><tr><th>Vendor</th><th>VRF ID</th><th>Submitted</th><th>Current Tag</th><th>Finance Action</th></tr></thead>
+            <tbody id="dept-pending-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ USERS ══ -->
+    <div class="view" id="view-users">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;" class="a1">
+        <div style="font-size:15px;font-weight:700;">Users &amp; Role Management</div>
+        <button class="btn btn-p btn-sm" onclick="openModal('add-user-modal')">+ Add User</button>
+      </div>
+      <div class="card a2">
+        <div class="ch"><div class="ct"><div class="ci ci-b">👥</div>All Users</div></div>
+        <div class="tw"><table><thead><tr><th>User</th><th>Role</th><th>Dept</th><th>Subsidiary Access</th><th>Status</th><th>Last Active</th><th>Actions</th></tr></thead><tbody id="users-tbody"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- ══ PERMISSIONS ══ -->
+    <div class="view" id="view-permissions">
+      <div style="margin-bottom:16px;" class="a1"><div style="font-size:15px;font-weight:700;margin-bottom:3px;">Permission Matrix</div><div style="font-size:11px;color:var(--muted);">Role-based access control. ✓ Full · ◑ Partial/subsidiary-scoped · — None</div></div>
+      <div class="card a2">
+        <div class="ch"><div class="ct"><div class="ci ci-o">🔐</div>Role × Action Matrix</div><button class="btn btn-gh btn-sm" onclick="toast('Permissions saved','green')">Save</button></div>
+        <div style="overflow-x:auto;"><table class="ptbl"><thead><tr><th>Permission</th><th>Super Admin</th><th>Finance SPOC</th><th>Dept SPOC</th><th>AVP Finance</th><th>Viewer</th></tr></thead><tbody id="perm-tbody"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- ══ INTEGRATIONS ══ -->
+    <div class="view" id="view-integrations">
+      <div class="a1" style="margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;">
+        <div><div style="font-size:16px;font-weight:700;margin-bottom:3px;">Accounting System Integrations</div><div style="font-size:11px;color:var(--muted);">Connect your ERP and accounting software. Each integration syncs approved vendor masters automatically.</div></div>
+        <button class="btn btn-p btn-sm" onclick="openModal('add-int-modal')">+ Connect New</button>
+      </div>
+
+      <!-- NetSuite featured -->
+      <div class="card a2" style="margin-bottom:16px;">
+        <div class="ch">
+          <div class="ct"><div class="ci ci-b">🔷</div>NetSuite ERP — Primary Integration</div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span id="ns-live-badge" class="badge bg">● Live</span>
+            <div style="display:flex;align-items:center;gap:8px;font-size:11px;font-weight:600;">
+              <span style="color:var(--muted);">Enable sync</span>
+              <label class="tgl" id="ns-tgl-wrap"><input type="checkbox" id="ns-toggle" checked onchange="toggleNS(this.checked)"/><div class="tgl-track"></div><div class="tgl-thumb"></div></label>
+            </div>
+          </div>
+        </div>
+        <div class="cb">
+          <div class="g2" style="margin-bottom:16px;">
+            <div class="g2" style="gap:10px;">
+              <div><label class="fl">Account ID</label><input value="7094576" id="ns-account-id"/></div>
+              <div><label class="fl">Environment</label><select id="ns-env"><option>Production</option><option>Sandbox</option></select></div>
+              <div><label class="fl">Consumer Key</label><input value="••••••••••••••••••••" type="password"/></div>
+              <div><label class="fl">Token ID</label><input value="••••••••••••••" type="password"/></div>
+              <div><label class="fl">Vendor Code Format</label><input value="SR-{YEAR}-{SEQ4}" id="ns-code-fmt"/></div>
+              <div><label class="fl">Subsidiary Mapping</label><select><option>Auto from portal subsidiary</option><option>Manual per vendor</option></select></div>
+            </div>
+            <div>
+              <div class="slabel">Sync Configuration</div>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--surface2);border-radius:var(--r);border:1px solid var(--border2);">
+                  <div><div style="font-size:11px;font-weight:600;">Auto-create vendor on approval</div><div style="font-size:10px;color:var(--muted);">Pushes vendor master to NS immediately</div></div>
+                  <label class="tgl"><input type="checkbox" checked/><div class="tgl-track"></div><div class="tgl-thumb"></div></label>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--surface2);border-radius:var(--r);border:1px solid var(--border2);">
+                  <div><div style="font-size:11px;font-weight:600;">Sync department tags</div><div style="font-size:10px;color:var(--muted);">Maps portal dept → NS department field</div></div>
+                  <label class="tgl"><input type="checkbox" checked/><div class="tgl-track"></div><div class="tgl-thumb"></div></label>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--surface2);border-radius:var(--r);border:1px solid var(--border2);">
+                  <div><div style="font-size:11px;font-weight:600;">Bi-directional sync</div><div style="font-size:10px;color:var(--muted);">Pull NS updates back to portal</div></div>
+                  <label class="tgl"><input type="checkbox"/><div class="tgl-track"></div><div class="tgl-thumb"></div></label>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--surface2);border-radius:var(--r);border:1px solid var(--border2);">
+                  <div><div style="font-size:11px;font-weight:600;">Sync rejection events</div><div style="font-size:10px;color:var(--muted);">Log rejections in NS as inactive vendors</div></div>
+                  <label class="tgl"><input type="checkbox" checked/><div class="tgl-track"></div><div class="tgl-thumb"></div></label>
+                </div>
+              </div>
+              <div style="margin-top:14px;padding:12px;background:var(--surface2);border-radius:var(--r);border:1px solid var(--border2);">
+                <div style="font-size:10px;color:var(--muted);margin-bottom:4px;">Last sync</div>
+                <div style="font-size:12px;font-weight:600;" id="ns-last-sync">Today, 09:42 AM · 142 vendors</div>
+                <div style="font-size:10px;color:var(--green);margin-top:2px;" id="ns-sync-health">✓ All records in sync</div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-p btn-sm" onclick="testNS()">▶ Test Connection</button>
+            <button class="btn btn-blue btn-sm" onclick="syncNS()">↻ Sync Now</button>
+            <button class="btn btn-gh btn-sm" onclick="toast('NetSuite config saved','green')">Save Config</button>
+            <button class="btn btn-warn btn-sm" id="ns-disable-btn" onclick="toggleNS(false)">⏸ Disable Integration</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Other integrations grid -->
+      <div style="font-size:13px;font-weight:700;margin-bottom:12px;" class="a3">Other Accounting Systems</div>
+      <div id="int-grid" class="a4" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px;"></div>
+
+      <!-- Add custom integration -->
+      <div class="card a4">
+        <div class="ch"><div class="ct"><div class="ci ci-pk">🔌</div>Custom / API Integration</div></div>
+        <div class="cb">
+          <p style="font-size:11px;color:var(--muted);margin-bottom:14px;">Connect any accounting software that supports REST API or webhook-based vendor master sync.</p>
+          <div class="g3" style="margin-bottom:14px;">
+            <div><label class="fl">Integration Name <span class="req">*</span></label><input placeholder="e.g. SAP Business One" id="ci-name"/></div>
+            <div><label class="fl">API Base URL <span class="req">*</span></label><input placeholder="https://api.yoursoftware.com/v1" id="ci-url"/></div>
+            <div><label class="fl">Auth Type</label><select id="ci-auth"><option>Bearer Token</option><option>Basic Auth</option><option>OAuth 2.0</option><option>API Key</option></select></div>
+            <div><label class="fl">API Key / Token <span class="req">*</span></label><input type="password" placeholder="••••••••••••••••" id="ci-key"/></div>
+            <div><label class="fl">Vendor Create Endpoint</label><input placeholder="/vendors/create" id="ci-ep"/></div>
+            <div><label class="fl">Sync Trigger</label><select><option>On approval</option><option>Manual only</option><option>Scheduled (daily)</option></select></div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn btn-p btn-sm" onclick="addCustomInt()">+ Add Integration</button>
+            <button class="btn btn-gh btn-sm" onclick="toast('Testing endpoint…','amber')">▶ Test Endpoint</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ══ REPORTS & ANALYTICS ══ -->
+    <div class="view" id="view-reports">
+      <div class="a1" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+        <div>
+          <div style="font-size:16px;font-weight:700;margin-bottom:3px;">Reports &amp; Analytics</div>
+          <div style="font-size:11px;color:var(--muted);">Live metrics across all subsidiaries. Click any chart to drill down.</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <select style="width:auto;" id="report-period" onchange="renderReports()">
+            <option value="30">Last 30 days</option>
+            <option value="90">Last 90 days</option>
+            <option value="180">Last 6 months</option>
+            <option value="365">This year</option>
+          </select>
+          <button class="btn btn-gh btn-sm" onclick="toast('Exporting report to Excel…','amber')">⬇ Export Excel</button>
+          <button class="btn btn-p btn-sm" onclick="toast('Generating PDF report…','amber')">⬇ Export PDF</button>
+        </div>
+      </div>
+
+      <!-- KPI row -->
+      <div id="report-kpis" class="g4 a2" style="margin-bottom:18px;"></div>
+
+      <!-- Charts row -->
+      <div class="g2 a3" style="margin-bottom:16px;">
+        <!-- Onboarding trend chart -->
+        <div class="card">
+          <div class="ch">
+            <div class="ct"><div class="ci ci-o">📈</div>Vendor Onboarding Trend</div>
+            <span class="badge ba" style="font-size:9px;">Monthly</span>
+          </div>
+          <div class="cb" style="padding:12px 16px;">
+            <canvas id="trend-chart" height="200"></canvas>
+          </div>
+        </div>
+        <!-- Status distribution -->
+        <div class="card">
+          <div class="ch"><div class="ct"><div class="ci ci-g">🥧</div>Status Distribution</div></div>
+          <div class="cb" style="padding:12px 16px;display:flex;align-items:center;gap:20px;">
+            <canvas id="status-chart" height="200" style="max-width:200px;"></canvas>
+            <div id="status-legend" style="flex:1;display:flex;flex-direction:column;gap:8px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Second charts row -->
+      <div class="g2 a4" style="margin-bottom:16px;">
+        <!-- By subsidiary -->
+        <div class="card">
+          <div class="ch"><div class="ct"><div class="ci ci-b">🏢</div>Vendors by Subsidiary</div></div>
+          <div class="cb" style="padding:12px 16px;">
+            <canvas id="sub-chart" height="180"></canvas>
+          </div>
+        </div>
+        <!-- Approval time analytics -->
+        <div class="card">
+          <div class="ch"><div class="ct"><div class="ci ci-p">⏱</div>Avg Approval Time (Days)</div></div>
+          <div class="cb" style="padding:12px 16px;">
+            <canvas id="time-chart" height="180"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Department breakdown table -->
+      <div class="card a4">
+        <div class="ch"><div class="ct"><div class="ci ci-t">🏷</div>Department-wise Breakdown</div></div>
+        <div class="tw"><table>
+          <thead><tr><th>Department</th><th>Total Vendors</th><th>Approved</th><th>Pending</th><th>Rejected</th><th>Avg Days</th><th>Completion Rate</th></tr></thead>
+          <tbody id="dept-report-tbody"></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- ══ AUDIT LOG ══ -->
+    <div class="view" id="view-auditlog">
+      <div class="a1" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div>
+          <div style="font-size:16px;font-weight:700;margin-bottom:3px;">Audit Log</div>
+          <div style="font-size:11px;color:var(--muted);">Every portal action is timestamped and stored. Immutable — cannot be edited.</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-gh btn-sm" onclick="toast('Exporting audit log…','amber')">⬇ Export CSV</button>
+        </div>
+      </div>
+
+      <!-- Audit filter bar -->
+      <div class="fbar a2">
+        <div class="sbox"><span class="sicon">🔍</span><input id="audit-search" placeholder="Search user, action, vendor…" oninput="filterAuditLog(this.value)"/></div>
+        <select class="fsel" id="audit-type" onchange="filterAuditLog()">
+          <option value="">All Actions</option>
+          <option value="approval">Approvals</option>
+          <option value="rejection">Rejections</option>
+          <option value="magic_link">Magic Links</option>
+          <option value="login">Logins</option>
+          <option value="config">Config Changes</option>
+          <option value="netsuite">NetSuite Sync</option>
+          <option value="document">Document Upload</option>
+        </select>
+        <select class="fsel" id="audit-user" onchange="filterAuditLog()">
+          <option value="">All Users</option>
+          <option>Rahul Kumar</option>
+          <option>Ankit Sharma</option>
+          <option>Ravi Kapoor</option>
+          <option>Deepa Sharma</option>
+          <option>System</option>
+        </select>
+        <input type="date" style="width:auto;" id="audit-from" onchange="filterAuditLog()"/>
+        <input type="date" style="width:auto;" id="audit-to" onchange="filterAuditLog()"/>
+      </div>
+
+      <div class="card a3">
+        <div class="ch">
+          <div class="ct"><div class="ci ci-pk">📋</div>Activity Log <span id="audit-count" style="color:var(--muted);font-weight:400;font-size:10px;margin-left:4px;"></span></div>
+        </div>
+        <div class="tw" style="max-height:520px;overflow-y:auto;">
+          <table>
+            <thead><tr><th>Timestamp</th><th>User</th><th>Role</th><th>Action</th><th>Entity</th><th>Detail</th><th>IP</th><th>Status</th></tr></thead>
+            <tbody id="audit-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ NOTIFICATIONS ══ -->
+    <div class="view" id="view-notifications">
+      <div class="a1" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div>
+          <div style="font-size:16px;font-weight:700;margin-bottom:3px;">Notifications</div>
+          <div style="font-size:11px;color:var(--muted);">All portal alerts, approval events, and system messages.</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-gh btn-sm" onclick="markAllRead()">✓ Mark all read</button>
+          <button class="btn btn-gh btn-sm" onclick="toast('Notifications cleared','green')">🗑 Clear all</button>
+        </div>
+      </div>
+
+      <!-- Notification filter tabs -->
+      <div style="display:flex;gap:6px;margin-bottom:14px;" class="a2">
+        <button class="btn btn-p btn-sm" id="notif-tab-all" onclick="filterNotifs('all',this)">All <span id="notif-all-count" class="nbadge" style="background:rgba(255,255,255,.2);">0</span></button>
+        <button class="btn btn-gh btn-sm" id="notif-tab-unread" onclick="filterNotifs('unread',this)">Unread</button>
+        <button class="btn btn-gh btn-sm" id="notif-tab-approval" onclick="filterNotifs('approval',this)">Approvals</button>
+        <button class="btn btn-gh btn-sm" id="notif-tab-system" onclick="filterNotifs('system',this)">System</button>
+        <button class="btn btn-gh btn-sm" id="notif-tab-netsuite" onclick="filterNotifs('netsuite',this)">NetSuite</button>
+      </div>
+
+      <div id="notifications-list" class="a3" style="display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
+
+    <!-- ══ VENDOR REGISTRATION FORM (Magic Link View) ══ -->
+    <div class="view" id="view-vendor_form">
+      <div class="a1" style="max-width:760px;margin:0 auto;">
+        <!-- Header banner -->
+        <div style="background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border);border-radius:var(--rl);padding:22px 28px;margin-bottom:18px;display:flex;align-items:center;gap:16px;">
+          <div style="width:48px;height:48px;flex-shrink:0;">
+            <svg width="48" height="48" viewBox="0 0 36 36" fill="none">
+              <rect width="36" height="36" rx="9" fill="var(--orange)"/>
+              <path d="M18 6C18 6 24.5 9 26 16.5C27.5 24 22 30 18 30C14 30 8.5 24 10 16.5C11.5 9 18 6 18 6Z" fill="white" fill-opacity=".95"/>
+              <circle cx="18" cy="16" r="3" fill="var(--orange)"/>
+              <path d="M10 21L7 27L13 24Z" fill="white" fill-opacity=".75"/>
+              <path d="M26 21L29 27L23 24Z" fill="white" fill-opacity=".75"/>
+            </svg>
+          </div>
+          <div>
+            <div style="font-size:16px;font-weight:700;margin-bottom:2px;">Vendor Registration Form</div>
+            <div style="font-size:11px;color:var(--muted);">Shiprocket Limited — Complete all mandatory fields marked with <span style="color:var(--orange);">*</span></div>
+          </div>
+          <div style="margin-left:auto;">
+            <div style="background:var(--orange-d);border:1px solid rgba(255,107,53,.3);border-radius:8px;padding:8px 14px;text-align:center;">
+              <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;">Form ID</div>
+              <div style="font-size:13px;font-weight:700;color:var(--orange);font-family:var(--mono);">VRF-2024-0156</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress bar -->
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:14px 18px;margin-bottom:16px;" class="a2">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+            <span style="font-size:11px;font-weight:600;">Form completion</span>
+            <span style="font-size:11px;font-weight:700;color:var(--amber);" id="form-pct">45%</span>
+          </div>
+          <div class="prog" style="width:100%;height:8px;"><div class="pf pfa" id="form-prog" style="width:45%;"></div></div>
+          <div style="display:flex;gap:14px;margin-top:10px;flex-wrap:wrap;" id="form-step-dots"></div>
+        </div>
+
+        <!-- Section 1: Basic Info -->
+        <div class="card a3" style="margin-bottom:14px;">
+          <div class="ch"><div class="ct"><div class="ci ci-o">🏢</div>Basic Information</div><span class="badge bg">Section 1 of 4</span></div>
+          <div class="cb">
+            <div class="g2" style="margin-bottom:12px;">
+              <div><label class="fl">Vendor / Company Name <span class="req">*</span></label><input placeholder="e.g. Quantum Freight Solutions Pvt Ltd" id="vf-name" oninput="updateFormProgress()"/></div>
+              <div><label class="fl">Brand Name (if any)</label><input placeholder="e.g. QuickFreight™" id="vf-brand"/></div>
+              <div><label class="fl">Contact Person <span class="req">*</span></label><input placeholder="Full name" id="vf-contact" oninput="updateFormProgress()"/></div>
+              <div><label class="fl">Mobile <span class="req">*</span></label><input placeholder="+91 XXXXXXXXXX" id="vf-mobile" oninput="updateFormProgress()"/></div>
+              <div><label class="fl">Accounts Email <span class="req">*</span></label><input type="email" placeholder="accounts@company.com" id="vf-email" oninput="updateFormProgress()"/></div>
+              <div><label class="fl">Tax Email</label><input type="email" placeholder="gst@company.com" id="vf-tax-email"/></div>
+              <div><label class="fl">Telephone</label><input placeholder="0124-XXXXXXX" id="vf-tel"/></div>
+              <div><label class="fl">Type of Entity <span class="req">*</span></label>
+                <select id="vf-entity" onchange="updateFormProgress()">
+                  <option value="">— Select —</option>
+                  <option>Private Limited</option><option>LLP</option><option>Partnership Firm</option>
+                  <option>Sole Proprietorship</option><option>MSME</option><option>GST Unregistered</option>
+                  <option>Trust</option><option>HUF</option><option>OPC</option>
+                </select>
+              </div>
+              <div><label class="fl">Brief Description of Service <span class="req">*</span></label></div>
+            </div>
+            <div><textarea id="vf-desc" placeholder="Describe your services in detail…" style="height:72px;resize:none;" oninput="updateFormProgress()"></textarea></div>
+          </div>
+        </div>
+
+        <!-- Section 2: Address -->
+        <div class="card a3" style="margin-bottom:14px;">
+          <div class="ch"><div class="ct"><div class="ci ci-b">📍</div>Address Details</div><span class="badge bm">Section 2 of 4</span></div>
+          <div class="cb">
+            <div class="g2" style="margin-bottom:12px;">
+              <div class="full"><label class="fl">Street Address <span class="req">*</span></label><input placeholder="Building, Street, Area" id="vf-street" oninput="updateFormProgress()"/></div>
+              <div><label class="fl">City <span class="req">*</span></label><input placeholder="City" id="vf-city" oninput="updateFormProgress()"/></div>
+              <div><label class="fl">State <span class="req">*</span></label>
+                <select id="vf-state" onchange="updateFormProgress()">
+                  <option value="">— State —</option>
+                  <option>Haryana</option><option>Delhi</option><option>Maharashtra</option>
+                  <option>Karnataka</option><option>Tamil Nadu</option><option>Gujarat</option>
+                  <option>Rajasthan</option><option>Uttar Pradesh</option><option>West Bengal</option>
+                  <option>Telangana</option><option>Other</option>
+                </select>
+              </div>
+              <div><label class="fl">Country <span class="req">*</span></label><input value="India" id="vf-country"/></div>
+              <div><label class="fl">Postal Code <span class="req">*</span></label><input placeholder="6-digit PIN" id="vf-pin" maxlength="6" oninput="updateFormProgress()"/></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Tax & Compliance -->
+        <div class="card a3" style="margin-bottom:14px;">
+          <div class="ch"><div class="ct"><div class="ci ci-p">📋</div>Tax &amp; Compliance</div><span class="badge bm">Section 3 of 4</span></div>
+          <div class="cb">
+            <div class="g2" style="margin-bottom:12px;">
+              <div><label class="fl">PAN Number <span class="req">*</span></label><input placeholder="AAAAA0000A" id="vf-pan" maxlength="10" style="text-transform:uppercase;font-family:var(--mono);" oninput="this.value=this.value.toUpperCase();updateFormProgress()"/></div>
+              <div><label class="fl">Aadhar Linked with PAN? <span class="req">*</span></label>
+                <select id="vf-aadhar" onchange="updateFormProgress()"><option value="">— Select —</option><option>Yes</option><option>No</option></select>
+              </div>
+              <div><label class="fl">GST Number <span class="req">*</span></label><input placeholder="22AAAAA0000A1Z5" id="vf-gst" maxlength="15" style="text-transform:uppercase;font-family:var(--mono);" oninput="this.value=this.value.toUpperCase();updateFormProgress()"/></div>
+              <div><label class="fl">E-Invoicing Applicable? <span class="req">*</span></label>
+                <select id="vf-einv" onchange="updateFormProgress()"><option value="">— Select —</option><option>Yes</option><option>No</option></select>
+              </div>
+              <div><label class="fl">CIN / Entity Reg. Number <span class="req">*</span></label><input placeholder="U63090HR2024PTC..." id="vf-cin" style="font-family:var(--mono);" oninput="updateFormProgress()"/></div>
+              <div><label class="fl">MSME Registered? <span class="req">*</span></label>
+                <select id="vf-msme" onchange="handleMSME(this.value)"><option value="">— Select —</option><option value="yes">Yes</option><option value="no">No</option></select>
+              </div>
+              <div><label class="fl">ITR Filed Last 2 Years? <span class="req">*</span></label>
+                <select id="vf-itr" onchange="updateFormProgress()"><option value="">— Select —</option><option>Yes</option><option>No</option></select>
+              </div>
+              <div><label class="fl">ITR Ack No. — Year 1</label><input placeholder="Acknowledgement number" id="vf-itr1" style="font-family:var(--mono);"/></div>
+              <div><label class="fl">ITR Ack No. — Year 2</label><input placeholder="Acknowledgement number" id="vf-itr2" style="font-family:var(--mono);"/></div>
+            </div>
+            <!-- MSME auto-doc banner -->
+            <div id="msme-autodoc-banner" style="display:none;margin-top:4px;padding:12px 14px;background:var(--green-d);border:1px solid rgba(52,211,153,.25);border-radius:var(--r);">
+              <div style="font-size:11px;font-weight:600;color:var(--green);margin-bottom:4px;">✓ MSME Auto-Document Ready</div>
+              <div style="font-size:10px;color:var(--muted);margin-bottom:8px;">Your MSME declaration document will be auto-generated based on the information you provide. No manual upload required.</div>
+              <button class="btn btn-ok btn-sm" onclick="toast('MSME declaration preview generated','green')">Preview Auto-Document</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 4: Bank Details -->
+        <div class="card a4" style="margin-bottom:14px;">
+          <div class="ch"><div class="ct"><div class="ci ci-g">🏦</div>Bank Details</div><span class="badge bm">Section 4 of 4</span></div>
+          <div class="cb">
+            <div class="g2" style="margin-bottom:12px;">
+              <div><label class="fl">Account Holder Name <span class="req">*</span></label><input placeholder="Exact name as per bank" id="vf-acname" oninput="updateFormProgress()"/></div>
+              <div><label class="fl">Bank Name <span class="req">*</span></label><input placeholder="e.g. HDFC Bank" id="vf-bank" oninput="updateFormProgress()"/></div>
+              <div><label class="fl">Branch</label><input placeholder="Branch name / city" id="vf-branch"/></div>
+              <div><label class="fl">Account Number <span class="req">*</span></label><input placeholder="Account number" id="vf-accno" style="font-family:var(--mono);" oninput="updateFormProgress()"/></div>
+              <div><label class="fl">IFSC Code (11 digits) <span class="req">*</span></label><input placeholder="HDFC0001234" id="vf-ifsc" maxlength="11" style="text-transform:uppercase;font-family:var(--mono);" oninput="this.value=this.value.toUpperCase();updateFormProgress()"/></div>
+              <div><label class="fl">SWIFT Code (international)</label><input placeholder="10-digit SWIFT code" id="vf-swift" style="font-family:var(--mono);"/></div>
+              <div><label class="fl">City of Bank</label><input placeholder="City" id="vf-bankcity"/></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Document Upload Section -->
+        <div class="card a4" style="margin-bottom:16px;">
+          <div class="ch"><div class="ct"><div class="ci ci-b">📎</div>Required Documents</div><span id="doc-upload-count" class="badge ba">0 / 6 uploaded</span></div>
+          <div class="cb">
+            <div id="doc-upload-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="card a4" style="margin-bottom:24px;">
+          <div class="cb">
+            <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;">
+              <input type="checkbox" id="vf-auth-check" style="width:auto;margin-top:3px;" onchange="updateFormProgress()"/>
+              <label for="vf-auth-check" style="font-size:11px;color:var(--muted);cursor:pointer;line-height:1.6;">I certify that all information provided is accurate and complete. I authorise Shiprocket Limited to verify the details with relevant authorities. I understand that false information may result in immediate termination of the vendor relationship.</label>
+            </div>
+            <div style="display:flex;gap:10px;">
+              <button class="btn btn-gh" onclick="toast('Form saved as draft','amber')" style="flex:1;">💾 Save Draft</button>
+              <button class="btn btn-p" onclick="submitVendorForm()" style="flex:2;font-size:12px;">Submit Registration →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SETTINGS ══ -->
+    <div class="view" id="view-settings">
+      <div style="font-size:15px;font-weight:700;margin-bottom:16px;" class="a1">Portal Settings</div>
+      <div class="g2">
+        <div class="card a2"><div class="ch"><div class="ct"><div class="ci ci-b">📧</div>Email &amp; Magic Links</div></div><div class="cb">
+          <div class="g2" style="margin-bottom:12px;">
+            <div><label class="fl">Magic Link Expiry</label><select><option>48 hours</option><option>24 hours</option><option>72 hours</option></select></div>
+            <div><label class="fl">Approval Reminder (hrs)</label><input value="24"/></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><label class="tgl green"><input type="checkbox" checked/><div class="tgl-track"></div><div class="tgl-thumb"></div></label><span style="font-size:11px;">Send SMS alongside email</span></div>
+          <button class="btn btn-p btn-sm" onclick="toast('Email settings saved','green')">Save</button>
+        </div></div>
+        <div class="card a3"><div class="ch"><div class="ct"><div class="ci ci-g">☁</div>Document Storage</div></div><div class="cb">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><label class="tgl green"><input type="checkbox" checked/><div class="tgl-track"></div><div class="tgl-thumb"></div></label><span style="font-size:11px;">Google Drive</span></div>
+          <div style="margin-bottom:12px;"><label class="fl">Folder Path</label><input value="/Shiprocket/{Subsidiary}/{VendorName}"/></div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><label class="tgl green"><input type="checkbox" checked/><div class="tgl-track"></div><div class="tgl-thumb"></div></label><span style="font-size:11px;">Google Sheets index log</span></div>
+          <button class="btn btn-p btn-sm" onclick="toast('Storage config saved','green')">Save</button>
+        </div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ═══════════ VENDOR SIDE PANEL ═══════════ -->
+<div class="spanel" id="vendor-panel">
+  <div class="sph">
+    <div><div style="font-size:13px;font-weight:700;" id="vp-name">Vendor</div><div style="font-size:10px;color:var(--muted);" id="vp-sub"></div></div>
+    <div style="display:flex;align-items:center;gap:8px;"><span id="vp-badge" class="badge ba">Pending</span><button class="xbtn" onclick="closePanel()">✕</button></div>
+  </div>
+  <div class="spb" id="vp-body"></div>
+  <div class="spf" id="vp-foot"></div>
+</div>
+
+<!-- ═══════════ MODALS ═══════════ -->
+
+<!-- ROLE SWITCHER -->
+<div class="overlay" id="role-modal">
+  <div class="modal m-sm">
+    <div class="mh"><div class="mtitle">Switch Role</div><button class="xbtn" onclick="closeModal('role-modal')">✕</button></div>
+    <div class="mb" id="role-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+  </div>
+</div>
+
+<!-- ADD SUBSIDIARY -->
+<div class="overlay" id="add-sub-modal">
+  <div class="modal m-md">
+    <div class="mh"><div class="mtitle">Add New Subsidiary</div><button class="xbtn" onclick="closeModal('add-sub-modal')">✕</button></div>
+    <div class="mb">
+      <div class="g2" style="margin-bottom:12px;">
+        <div><label class="fl">Subsidiary Name <span class="req">*</span></label><input id="sub-name-in" placeholder="e.g. Shiprocket Commerce Pvt Ltd"/></div>
+        <div><label class="fl">Short Name</label><input id="sub-short-in" placeholder="e.g. SR Commerce"/></div>
+        <div><label class="fl">Location <span class="req">*</span></label><input id="sub-loc-in" placeholder="City, State"/></div>
+        <div><label class="fl">CIN / Reg. Number</label><input id="sub-cin-in" placeholder="U63090HR2024PTC..."/></div>
+        <div><label class="fl">NetSuite Entity ID</label><input id="sub-ns-in" placeholder="NS subsidiary ID"/></div>
+        <div><label class="fl">Default Finance SPOC</label><select id="sub-spoc-in"><option>Rahul Kumar</option><option>Deepa Sharma</option><option>Vikram Rao</option></select></div>
+      </div>
+      <div style="margin-bottom:12px;"><label class="fl">Address</label><textarea style="height:60px;resize:none;" placeholder="Full registered address…"></textarea></div>
+      <div style="display:flex;align-items:center;gap:10px;"><label class="tgl green"><input type="checkbox" checked/><div class="tgl-track"></div><div class="tgl-thumb"></div></label><span style="font-size:11px;">Enable vendor onboarding for this subsidiary immediately</span></div>
+    </div>
+    <div class="mf"><button class="btn btn-gh" onclick="closeModal('add-sub-modal')">Cancel</button><button class="btn btn-p" onclick="addSubsidiary()">Create Subsidiary</button></div>
+  </div>
+</div>
+
+<!-- EDIT SUBSIDIARY -->
+<div class="overlay" id="edit-sub-modal">
+  <div class="modal m-md">
+    <div class="mh"><div class="mtitle" id="edit-sub-title">Edit Subsidiary</div><button class="xbtn" onclick="closeModal('edit-sub-modal')">✕</button></div>
+    <div class="mb" id="edit-sub-body"></div>
+    <div class="mf"><button class="btn btn-gh" onclick="closeModal('edit-sub-modal')">Cancel</button><button class="btn btn-p" onclick="toast('Subsidiary updated','green');closeModal('edit-sub-modal')">Save Changes</button></div>
+  </div>
+</div>
+
+<!-- ADD DEPT -->
+<div class="overlay" id="add-dept-modal">
+  <div class="modal m-sm">
+    <div class="mh"><div class="mtitle">Add Department</div><button class="xbtn" onclick="closeModal('add-dept-modal')">✕</button></div>
+    <div class="mb">
+      <div style="margin-bottom:12px;"><label class="fl">Department Name <span class="req">*</span></label><input id="dept-name-in" placeholder="e.g. Marketing"/></div>
+      <div class="g2" style="margin-bottom:12px;">
+        <div><label class="fl">Dept Head</label><input placeholder="Name"/></div>
+        <div><label class="fl">SPOC Email</label><input placeholder="spoc@shiprocket.com" type="email"/></div>
+      </div>
+      <div style="margin-bottom:12px;"><label class="fl">Color Tag</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
+          <div class="dept-tag dt-blue" onclick="selectDeptColor(this,'blue')">Blue</div>
+          <div class="dept-tag dt-green" onclick="selectDeptColor(this,'green')">Green</div>
+          <div class="dept-tag dt-purple" onclick="selectDeptColor(this,'purple')">Purple</div>
+          <div class="dept-tag dt-teal" onclick="selectDeptColor(this,'teal')">Teal</div>
+          <div class="dept-tag dt-pink" onclick="selectDeptColor(this,'pink')">Pink</div>
+          <div class="dept-tag dt-amber" onclick="selectDeptColor(this,'amber')">Amber</div>
+        </div>
+      </div>
+    </div>
+    <div class="mf"><button class="btn btn-gh" onclick="closeModal('add-dept-modal')">Cancel</button><button class="btn btn-p" onclick="addDept()">Add Department</button></div>
+  </div>
+</div>
+
+<!-- MAP DEPT -->
+<div class="overlay" id="map-dept-modal">
+  <div class="modal m-md">
+    <div class="mh"><div class="mtitle">Map Vendor → Department</div><button class="xbtn" onclick="closeModal('map-dept-modal')">✕</button></div>
+    <div class="mb">
+      <div style="margin-bottom:14px;"><label class="fl">Select Vendor <span class="req">*</span></label>
+        <select><option>— Choose pending vendor —</option><option>Quantum Freight Solutions (VRF-2024-0143)</option><option>BlueDart Express Ltd (VRF-2024-0141)</option><option>Mehta Packaging Co. (VRF-2024-0139)</option><option>TechMove Solutions (VRF-2024-0129)</option><option>Reliable Freight Corp. (VRF-2024-0127)</option></select>
+      </div>
+      <div style="margin-bottom:14px;"><label class="fl">Assign Department <span class="req">*</span></label>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;" id="dept-pick-list"></div>
+      </div>
+      <div style="margin-bottom:14px;"><label class="fl">Assign Dept SPOC <span class="req">*</span></label><select><option>Ankit Sharma — Procurement</option><option>Priya Menon — Logistics</option><option>Dev Anand — Operations</option><option>Sunita Rao — Finance</option></select></div>
+      <div><label class="fl">Finance Note to SPOC</label><textarea style="height:60px;resize:none;" placeholder="Add context for Dept SPOC review…"></textarea></div>
+    </div>
+    <div class="mf"><button class="btn btn-gh" onclick="closeModal('map-dept-modal')">Cancel</button><button class="btn btn-p" onclick="mapDept()">Map &amp; Send to L1 →</button></div>
+  </div>
+</div>
+
+<!-- ADD INTEGRATION -->
+<div class="overlay" id="add-int-modal">
+  <div class="modal m-md">
+    <div class="mh"><div class="mtitle">Connect Accounting Software</div><button class="xbtn" onclick="closeModal('add-int-modal')">✕</button></div>
+    <div class="mb">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px;" id="quick-int-grid"></div>
+      <div style="border-top:1px solid var(--border);padding-top:16px;">
+        <div style="font-size:11px;font-weight:600;margin-bottom:10px;">Or configure manually</div>
+        <div class="g2">
+          <div><label class="fl">Software Name</label><input placeholder="e.g. SAP S/4HANA"/></div>
+          <div><label class="fl">API URL</label><input placeholder="https://..."/></div>
+        </div>
+      </div>
+    </div>
+    <div class="mf"><button class="btn btn-gh" onclick="closeModal('add-int-modal')">Cancel</button><button class="btn btn-p" onclick="toast('Integration added — configure API keys','amber');closeModal('add-int-modal')">Add &amp; Configure</button></div>
+  </div>
+</div>
+
+<!-- ADD USER -->
+<div class="overlay" id="add-user-modal">
+  <div class="modal m-md">
+    <div class="mh"><div class="mtitle">Add New User</div><button class="xbtn" onclick="closeModal('add-user-modal')">✕</button></div>
+    <div class="mb">
+      <div class="g2" style="margin-bottom:12px;">
+        <div><label class="fl">First Name <span class="req">*</span></label><input placeholder="Rahul"/></div>
+        <div><label class="fl">Last Name <span class="req">*</span></label><input placeholder="Sharma"/></div>
+        <div><label class="fl">Email <span class="req">*</span></label><input placeholder="user@shiprocket.com" type="email"/></div>
+        <div><label class="fl">Mobile</label><input placeholder="+91 98XXXXXXXX"/></div>
+        <div><label class="fl">Role <span class="req">*</span></label><select><option>— Select —</option><option>Super Admin</option><option>Finance SPOC</option><option>Dept SPOC</option><option>AVP Finance</option><option>Viewer</option></select></div>
+        <div><label class="fl">Department</label><select><option>Finance</option><option>Procurement</option><option>Logistics</option><option>Operations</option></select></div>
+      </div>
+      <div><label class="fl">Subsidiary Access</label>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-top:6px;">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:11px;"><input type="checkbox" checked style="width:auto;"/> Shiprocket Limited</label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:11px;"><input type="checkbox" style="width:auto;"/> Shiprocket Internet Pvt Ltd</label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:11px;"><input type="checkbox" style="width:auto;"/> WS Retail India Pvt Ltd</label>
+        </div>
+      </div>
+    </div>
+    <div class="mf"><button class="btn btn-gh" onclick="closeModal('add-user-modal')">Cancel</button><button class="btn btn-p" onclick="toast('✓ Invite sent','green');closeModal('add-user-modal')">Send Invite</button></div>
+  </div>
+</div>
+
+<!-- INITIATE MODAL -->
+<div class="overlay" id="initiate-modal">
+  <div class="modal m-md">
+    <div class="mh"><div class="mtitle">Initiate Vendor Onboarding</div><button class="xbtn" onclick="closeModal('initiate-modal')">✕</button></div>
+    <div class="mb">
+      <div class="g2" style="margin-bottom:12px;">
+        <div><label class="fl">Vendor Email <span class="req">*</span></label><input placeholder="vendor@company.com" type="email"/></div>
+        <div><label class="fl">Mobile <span class="req">*</span></label><input placeholder="+91 XXXXXXXXXX"/></div>
+        <div><label class="fl">Subsidiary <span class="req">*</span></label><select><option>Shiprocket Limited</option><option>Shiprocket Internet Pvt Ltd</option><option>WS Retail India Pvt Ltd</option></select></div>
+        <div><label class="fl">Vendor Category</label><select><option>Logistics</option><option>Packaging</option><option>Technology</option><option>Manpower</option><option>Other</option></select></div>
+        <div class="full"><label class="fl">Pre-assign Department</label>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;" id="initiate-dept-pick"></div>
+        </div>
+      </div>
+    </div>
+    <div class="mf"><button class="btn btn-gh" onclick="closeModal('initiate-modal')">Cancel</button><button class="btn btn-p" onclick="toast('✓ Magic link sent to vendor','green');closeModal('initiate-modal')">Send Magic Link →</button></div>
+  </div>
+</div>
+
+<!-- ENTITY / CAT ADD (lightweight) -->
+<div class="overlay" id="add-entity-modal">
+  <div class="modal m-sm">
+    <div class="mh"><div class="mtitle">Add Entity Type</div><button class="xbtn" onclick="closeModal('add-entity-modal')">✕</button></div>
+    <div class="mb"><label class="fl">Entity Type Name <span class="req">*</span></label><input id="entity-name-in" placeholder="e.g. Trust, HUF, Sole Proprietorship"/></div>
+    <div class="mf"><button class="btn btn-gh" onclick="closeModal('add-entity-modal')">Cancel</button><button class="btn btn-p" onclick="addEntity()">Add</button></div>
+  </div>
+</div>
+<div class="overlay" id="add-cat-modal">
+  <div class="modal m-sm">
+    <div class="mh"><div class="mtitle">Add Vendor Category</div><button class="xbtn" onclick="closeModal('add-cat-modal')">✕</button></div>
+    <div class="mb"><label class="fl">Category Name <span class="req">*</span></label><input id="cat-name-in" placeholder="e.g. Marketing, Legal, Consulting"/></div>
+    <div class="mf"><button class="btn btn-gh" onclick="closeModal('add-cat-modal')">Cancel</button><button class="btn btn-p" onclick="addCategory()">Add</button></div>
+  </div>
+</div>
+
+<!-- CONFIRM DELETE -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-icon" id="confirm-icon">⚠️</div>
+    <div class="confirm-title" id="confirm-title">Confirm Delete</div>
+    <div class="confirm-msg" id="confirm-msg">Are you sure?</div>
+    <div class="confirm-btns">
+      <button class="btn btn-gh" onclick="document.getElementById('confirm-overlay').classList.remove('open')">Cancel</button>
+      <button class="btn btn-ng" id="confirm-ok-btn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast-el"><div class="tdot" id="toast-dot"></div><span id="toast-msg"></span></div>
+
+
+<!-- ══════════ THEME SWITCHER MODAL ══════════ -->
+<div class="overlay" id="theme-modal">
+  <div class="modal" style="width:780px;">
+    <div class="mh">
+      <div>
+        <div class="mtitle">Portal Theme</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:2px;">Choose a colour scheme — applied instantly across the entire portal</div>
+      </div>
+      <button class="xbtn" onclick="closeModal('theme-modal')">✕</button>
+    </div>
+    <div class="mb">
+      <div id="theme-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;"></div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;gap:14px;">
+        <div id="theme-preview-swatch" style="width:40px;height:40px;border-radius:10px;flex-shrink:0;"></div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:700;" id="theme-preview-name">Midnight Orange</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:2px;" id="theme-preview-desc">Dark base with energetic orange — bold, professional, and high-contrast</div>
+        </div>
+        <button class="btn btn-p" id="theme-apply-btn" onclick="applySelectedTheme()">Apply Theme</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast-el"><div class="tdot" id="toast-dot"></div><span id="toast-msg"></span></div>
+<!-- CONFIRM -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-icon" id="confirm-icon">⚠️</div>
+    <div class="confirm-title" id="confirm-title">Confirm Delete</div>
+    <div class="confirm-msg" id="confirm-msg">Are you sure?</div>
+    <div class="confirm-btns">
+      <button class="btn btn-gh" onclick="document.getElementById('confirm-overlay').classList.remove('open')">Cancel</button>
+      <button class="btn btn-ng" id="confirm-ok-btn">Delete</button>
+    </div>
+  </div>
+</div>
+<script>
+// ═══════════════ DATA ═══════════════
+const ROLES=[{id:'super',name:'Super Admin',ini:'SA',av:'av-o',badge:'bo'},{id:'finance',name:'Finance SPOC',ini:'RK',av:'av-b',badge:'bb'},{id:'dept',name:'Dept SPOC',ini:'AS',av:'av-g',badge:'bg'},{id:'avp',name:'AVP Finance',ini:'RV',av:'av-p',badge:'bp'},{id:'viewer',name:'Viewer',ini:'VM',av:'av-r',badge:'bm'}];
+let curRole=ROLES[1];
+
+let SUBS=[
+  {name:'Shiprocket Limited',short:'SR Limited',loc:'Gurugram, HQ',cin:'U63090HR2019PTC094821',ns:'1',spoc:'Rahul Kumar',color:'#FF6B35',vendors:72,pending:12,approved:54,rejected:6,enabled:true},
+  {name:'Shiprocket Internet Pvt Ltd',short:'SR Internet',loc:'Bengaluru',cin:'U72900KA2021PTC135478',ns:'2',spoc:'Deepa Sharma',color:'#60A5FA',vendors:38,pending:7,approved:28,rejected:3,enabled:true},
+  {name:'WS Retail India Pvt Ltd',short:'WS Retail',loc:'Delhi',cin:'U52100DL2015PTC287654',ns:'3',spoc:'Vikram Rao',color:'#34D399',vendors:32,pending:4,approved:26,rejected:2,enabled:true},
+  {name:'Flipkart India Pvt Ltd',short:'Flipkart IN',loc:'Bengaluru',cin:'U51109KA2012PTC066107',ns:'4',spoc:'—',color:'#A78BFA',vendors:0,pending:0,approved:0,rejected:0,enabled:false},
+  {name:'Flipkart Internet Pvt Ltd',short:'Flipkart Net',loc:'Bengaluru',cin:'U74899KA2012PTC066660',ns:'5',spoc:'—',color:'#FBBF24',vendors:0,pending:0,approved:0,rejected:0,enabled:false},
+];
+let activeSub=SUBS[0];
+
+let DEPTS=[
+  {name:'Procurement',spoc:'Ankit Sharma',email:'ankit@shiprocket.com',color:'blue',vendors:38},
+  {name:'Logistics',spoc:'Priya Menon',email:'priya@shiprocket.com',color:'purple',vendors:27},
+  {name:'Operations',spoc:'Dev Anand',email:'dev@shiprocket.com',color:'teal',vendors:19},
+  {name:'Finance',spoc:'Rahul Kumar',email:'rahul@shiprocket.com',color:'green',vendors:12},
+  {name:'Technology',spoc:'Arun Iyer',email:'arun@shiprocket.com',color:'pink',vendors:6},
+];
+let selDeptColor='blue';
+
+let ENTITY_TYPES=['Private Limited','LLP','Partnership Firm','Sole Proprietorship','MSME','GST Unregistered','Trust','HUF','OPC'];
+let CATEGORIES=['Logistics','Packaging','Technology','Manpower','Marketing','Consulting','Facility Management','Legal','Finance','Media'];
+
+const VENDORS=[
+  {id:'VRF-2024-0143',name:'Quantum Freight Solutions Pvt Ltd',gstin:'27AAPFQ1234F1Z5',pan:'AAPFQ1234F',entity:'Pvt Ltd',sub:'SR Limited',dept:'Procurement',stage:'Finance L2',status:'Pending',pct:82,date:'14 Jan 2025',contact:'Siddharth Nair',email:'accounts@qfs.in',urgent:false},
+  {id:'VRF-2024-0141',name:'BlueDart Express Ltd',gstin:'07AABCB1234M1ZD',pan:'AABCB1234M',entity:'Pvt Ltd',sub:'SR Internet',dept:'Logistics',stage:'AVP Override',status:'Escalated',pct:70,date:'12 Jan 2025',contact:'Arun Mehta',email:'ar@bluedart.in',urgent:true},
+  {id:'VRF-2024-0139',name:'Mehta Packaging Co.',gstin:'N/A',pan:'AAGFM5432P',entity:'MSME',sub:'WS Retail',dept:'Operations',stage:'Dept SPOC L1',status:'Pending',pct:95,date:'10 Jan 2025',contact:'Kavita Mehta',email:'kav@mehta.in',urgent:false},
+  {id:'VRF-2024-0137',name:'SwiftLogix Technologies',gstin:'29AADCS0472N1ZA',pan:'AADCS0472N',entity:'Pvt Ltd',sub:'SR Limited',dept:'Technology',stage:'Approved',status:'Approved',pct:100,date:'8 Jan 2025',contact:'Raj Sharma',email:'raj@swift.in',urgent:false},
+  {id:'VRF-2024-0135',name:'Arjun Enterprises',gstin:'Unregistered',pan:'AAAFA1234C',entity:'GST Unreg.',sub:'SR Limited',dept:'Procurement',stage:'Approved',status:'Approved',pct:88,date:'5 Jan 2025',contact:'Arjun Verma',email:'arjun@ae.in',urgent:false},
+  {id:'VRF-2024-0133',name:'Priya Supply Chain Co.',gstin:'07AAGFP9876C1ZK',pan:'AAGFP9876C',entity:'LLP',sub:'SR Internet',dept:'Logistics',stage:'Approved',status:'Approved',pct:100,date:'3 Jan 2025',contact:'Priya Singh',email:'ps@psc.in',urgent:false},
+  {id:'VRF-2024-0131',name:'NexGen Packaging LLP',gstin:'09AAGFN1234A1Z5',pan:'AAGFN1234A',entity:'LLP',sub:'WS Retail',dept:'',stage:'Rejected',status:'Rejected',pct:60,date:'28 Dec 2024',contact:'Mohan Das',email:'md@nexgen.in',urgent:false},
+  {id:'VRF-2024-0129',name:'TechMove Solutions',gstin:'27AACTS1234B1Z8',pan:'AACTS1234B',entity:'Pvt Ltd',sub:'SR Limited',dept:'',stage:'Finance L2',status:'Pending',pct:76,date:'26 Dec 2024',contact:'Ananya Iyer',email:'ai@tm.in',urgent:false},
+  {id:'VRF-2024-0127',name:'Reliable Freight Corp.',gstin:'06AACFR5678C1Z9',pan:'AACFR5678C',entity:'Pvt Ltd',sub:'SR Internet',dept:'',stage:'Dept SPOC L1',status:'Pending',pct:88,date:'22 Dec 2024',contact:'Deepak Kumar',email:'dk@rfc.in',urgent:false},
+  {id:'VRF-2024-0125',name:'GreenPack India Pvt Ltd',gstin:'29AACFG4321D1Z3',pan:'AACFG4321D',entity:'Pvt Ltd',sub:'SR Limited',dept:'Procurement',stage:'Approved',status:'Approved',pct:100,date:'18 Dec 2024',contact:'Sumita Roy',email:'sr@gp.in',urgent:false},
+  {id:'VRF-2024-0123',name:'FastTrack Couriers',gstin:'N/A',pan:'AACFF3214E',entity:'MSME',sub:'WS Retail',dept:'Logistics',stage:'Rejected',status:'Rejected',pct:45,date:'15 Dec 2024',contact:'Vikram Joshi',email:'vj@ftc.in',urgent:false},
+  {id:'VRF-2024-0121',name:'Delhivery Logistics',gstin:'07AABCD5678F1ZK',pan:'AABCD5678F',entity:'Pvt Ltd',sub:'SR Limited',dept:'Logistics',stage:'Approved',status:'Approved',pct:100,date:'10 Dec 2024',contact:'Suresh Kumar',email:'sk@delhivery.in',urgent:false},
+];
+
+const USERS=[
+  {name:'Rohan Kapoor',role:'Super Admin',dept:'IT',sub:['SR Limited','SR Internet','WS Retail'],active:'Today',on:true,ini:'RO',av:'av-o'},
+  {name:'Rahul Kumar',role:'Finance SPOC',dept:'Finance',sub:['SR Limited'],active:'2 hrs ago',on:true,ini:'RK',av:'av-b'},
+  {name:'Deepa Sharma',role:'Finance SPOC',dept:'Finance',sub:['SR Internet'],active:'Today',on:true,ini:'DS',av:'av-b'},
+  {name:'Ankit Sharma',role:'Dept SPOC',dept:'Procurement',sub:['SR Limited'],active:'Today',on:true,ini:'AS',av:'av-g'},
+  {name:'Priya Menon',role:'Dept SPOC',dept:'Logistics',sub:['SR Internet'],active:'1 hr ago',on:true,ini:'PM',av:'av-g'},
+  {name:'Dev Anand',role:'Dept SPOC',dept:'Operations',sub:['WS Retail'],active:'Today',on:true,ini:'DA',av:'av-g'},
+  {name:'Ravi Kapoor',role:'AVP Finance',dept:'Finance',sub:['SR Limited','SR Internet','WS Retail'],active:'Yesterday',on:true,ini:'RV',av:'av-p'},
+  {name:'Varun Malhotra',role:'Viewer',dept:'Audit',sub:['SR Limited'],active:'1 week ago',on:false,ini:'VM',av:'av-r'},
+];
+
+const PERMS=[
+  {a:'View vendor list',           s:1,f:1,d:1,v:1,vi:1},
+  {a:'Initiate onboarding',        s:1,f:1,d:0,v:0,vi:0},
+  {a:'Pre-assign department tag',  s:1,f:1,d:0,v:0,vi:0},
+  {a:'Map vendor → department',    s:1,f:1,d:0,v:0,vi:0},
+  {a:'Level 1 approve (Dept)',     s:1,f:1,d:1,v:1,vi:0},
+  {a:'Level 2 approve (Finance)',  s:1,f:1,d:0,v:1,vi:0},
+  {a:'Reject vendor',              s:1,f:1,d:0,v:1,vi:0},
+  {a:'AVP override',               s:1,f:0,d:0,v:1,vi:0},
+  {a:'Generate vendor code',       s:1,f:1,d:0,v:1,vi:0},
+  {a:'Manage master data',         s:1,f:0,d:0,v:0,vi:0},
+  {a:'Add/delete subsidiaries',    s:1,f:0,d:0,v:0,vi:0},
+  {a:'Add/edit departments',       s:1,f:1,d:0,v:0,vi:0},
+  {a:'Manage users & roles',       s:1,f:0,d:0,v:0,vi:0},
+  {a:'Toggle NetSuite sync',       s:1,f:1,d:0,v:0,vi:0},
+  {a:'Configure integrations',     s:1,f:0,d:0,v:0,vi:0},
+  {a:'Add accounting integration', s:1,f:0,d:0,v:0,vi:0},
+  {a:'Download reports',           s:1,f:1,d:1,v:1,vi:1},
+  {a:'Export data',                s:1,f:1,d:0,v:1,vi:1},
+];
+
+let INTEGRATIONS=[
+  {name:'NetSuite ERP',   logo:'🔷',color:'#60A5FA',desc:'Primary ERP — full vendor master sync',enabled:true, connected:true, vendors:142, lastSync:'Today 09:42'},
+  {name:'Tally Prime',    logo:'📗',color:'#34D399',desc:'Tally accounting — vendor ledger sync',enabled:true, connected:true, vendors:38,  lastSync:'Today 08:15'},
+  {name:'Zoho Books',     logo:'🔮',color:'#A78BFA',desc:'Zoho Books cloud accounting',          enabled:false,connected:false,vendors:0,   lastSync:'Never'},
+  {name:'SAP S/4HANA',    logo:'🔵',color:'#3B82F6',desc:'SAP enterprise integration',           enabled:false,connected:false,vendors:0,   lastSync:'Never'},
+  {name:'QuickBooks',     logo:'🟢',color:'#22C55E',desc:'QuickBooks Online accounting',          enabled:false,connected:false,vendors:0,   lastSync:'Never'},
+  {name:'Busy Accounting',logo:'🟠',color:'#F97316',desc:'BUSY accounting software (India)',      enabled:false,connected:false,vendors:0,   lastSync:'Never'},
+  {name:'Marg ERP',       logo:'🔴',color:'#EF4444',desc:'Marg ERP vendor management',           enabled:false,connected:false,vendors:0,   lastSync:'Never'},
+  {name:'FocusLyte',      logo:'🟣',color:'#8B5CF6',desc:'Focus Lyte ERP (SME)',                  enabled:false,connected:false,vendors:0,   lastSync:'Never'},
+];
+
+// ═══════════════ NAV ═══════════════
+const viewTitles={dashboard:'Dashboard',vendors:'Vendor List',subsidiaries:'Subsidiaries',masterdata:'Master Data Management',departments:'Department Mapping',users:'Users & Roles',permissions:'Permissions',integrations:'Integrations',settings:'Settings'};
+function nav(el,id){
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
+  if(el) el.classList.add('on');
+  else { const n=Array.from(document.querySelectorAll('.ni')).find(n=>n.textContent.includes(viewTitles[id]?.split(' ')[0]||id)); if(n) n.classList.add('on'); }
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  const vEl=document.getElementById('view-'+id);
+  if(vEl) vEl.classList.add('on');
+  document.getElementById('pt').textContent=viewTitles[id]||id;
+  document.getElementById('bc').textContent=viewTitles[id]||id;
+  if(id==='vendors')renderVendors();
+  if(id==='masterdata')renderMasterData();
+  if(id==='departments')renderDepartments();
+  if(id==='subsidiaries')renderSubsidiaries();
+  if(id==='users')renderUsers();
+  if(id==='permissions')renderPermissions();
+  if(id==='integrations')renderIntegrations();
+}
+
+// ═══════════════ VENDOR LIST ═══════════════
+function deptTag(d){if(!d)return'<span class="badge bm">Untagged</span>';const c={Procurement:'dt-blue',Logistics:'dt-purple',Operations:'dt-teal',Finance:'dt-green',Technology:'dt-pink'}[d]||'dt-amber';return`<span class="dept-tag ${c}">${d}</span>`;}
+function pctColor(p){return p>=90?'var(--green)':p>=70?'var(--amber)':'var(--red)';}
+function pfClass(p){return p>=90?'pfg':p>=70?'pfa':'pfr';}
+function statusBadge(s){return{Approved:'bg',Pending:'ba',Rejected:'br',Escalated:'bo'}[s]||'bm';}
+
+function renderVendors(list){
+  list=list||VENDORS;
+  document.getElementById('v-count').textContent=`(${list.length})`;
+  document.getElementById('v-tbody').innerHTML=list.map((v,i)=>{
+    const idx=VENDORS.indexOf(v);
+    return`<tr onclick="openVendorPanel(${idx})">
+      <td onclick="event.stopPropagation()"><input type="checkbox" style="width:auto;"/></td>
+      <td><div class="tn">${v.name}${v.urgent?' <span style="color:var(--orange);font-size:10px;">⚡</span>':''}</div><div class="ts2 tm">${v.id}</div></td>
+      <td>${deptTag(v.dept)}</td>
+      <td><span class="badge ${v.sub==='SR Limited'?'bo':v.sub==='SR Internet'?'bb':'bg'}" style="font-size:9px;">${v.sub}</span></td>
+      <td><span class="badge bm">${v.entity}</span></td>
+      <td><span class="badge bm" style="font-size:9px;">${v.stage}</span></td>
+      <td>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <div class="prog" style="width:60px;"><div class="pf ${pfClass(v.pct)}" style="width:${v.pct}%"></div></div>
+          <span style="font-size:10px;font-weight:700;color:${pctColor(v.pct)};">${v.pct}%</span>
+        </div>
+      </td>
+      <td><span class="badge ${statusBadge(v.status)}">${v.status}</span></td>
+      <td><button class="btn btn-gh btn-sm">View</button></td>
+    </tr>`;
+  }).join('');
+}
+function filterVendors(){renderVendors(VENDORS);}
+
+// ═══════════════ VENDOR PANEL ═══════════════
+function openVendorPanel(idx){
+  const v=VENDORS[idx];
+  document.getElementById('vp-name').textContent=v.name;
+  document.getElementById('vp-sub').textContent=`${v.id} · ${v.sub}`;
+  document.getElementById('vp-badge').className=`badge ${statusBadge(v.status)}`;
+  document.getElementById('vp-badge').textContent=v.status;
+  document.getElementById('vp-body').innerHTML=`
+    <div style="background:var(--surface2);border-radius:var(--r);padding:10px 12px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">
+      <div><div style="font-size:9px;color:var(--muted);margin-bottom:3px;">FORM COMPLETION</div>
+        <div class="prog" style="width:160px;"><div class="pf ${pfClass(v.pct)}" style="width:${v.pct}%"></div></div></div>
+      <div style="font-size:18px;font-weight:700;color:${pctColor(v.pct)};">${v.pct}%</div>
+    </div>
+    <div class="slabel">Department Assignment</div>
+    <div style="padding:10px;background:var(--surface2);border-radius:var(--r);border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <div>
+        <div style="font-size:10px;color:var(--muted);margin-bottom:4px;">Tagged Department</div>
+        ${v.dept ? deptTag(v.dept) : '<span style="color:var(--amber);font-size:11px;font-weight:600;">⚠ Not tagged yet</span>'}
+      </div>
+      "+(curRole.id==='finance'||curRole.id==='super' ? '<button class="btn btn-gh btn-sm" onclick="openModal(\'map-dept-modal\')">Change Dept</button>' : '')+"
+    </div>
+    <div class="slabel">Vendor Details</div>
+    <div class="fr"><span class="frl">Contact</span><span class="frv">${v.contact}</span></div>
+    <div class="fr"><span class="frl">Email</span><span class="frv">${v.email}</span></div>
+    <div class="fr"><span class="frl">Entity</span><span class="frv">${v.entity}</span></div>
+    <div class="fr"><span class="frl">GSTIN</span><span class="frv mono">${v.gstin}</span></div>
+    <div class="fr"><span class="frl">PAN</span><span class="frv mono">${v.pan}</span></div>
+    <div class="fr"><span class="frl">Subsidiary</span><span class="frv">${v.sub}</span></div>
+    <div class="fr"><span class="frl">Submitted</span><span class="frv">${v.date}</span></div>
+    <div class="slabel">Documents</div>
+    "+(['GST Certificate','PAN Card','Cancelled Cheque','VRF Signed','Reg. Certificate'].map(d=>'
+      <div style="display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:var(--r);cursor:pointer;transition:.1s;" onmouseover="this.style.background=\'var(--surface2)\'" onmouseout="this.style.background=\'\'">
+        <div style="width:28px;height:28px;border-radius:6px;background:var(--orange-d);display:flex;align-items:center;justify-content:center;font-size:12px;">📄</div>
+        <div style="flex:1;"><div style="font-size:11px;font-weight:500;">'+(d)+'</div><div style="font-size:9px;color:var(--muted);">PDF · Uploaded</div></div>
+        <span style="color:var(--green);font-size:11px;">✓</span>
+      </div>').join(''))+"
+    "+(v.pct<100?'<div style="display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:var(--r);opacity:.6;">
+      <div style="width:28px;height:28px;border-radius:6px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:11px;border:1px dashed var(--border);">?</div>
+      <div style="flex:1;"><div style="font-size:11px;font-weight:500;color:var(--muted);">Missing docs</div><div style="font-size:9px;color:var(--red);">Required</div></div>
+      <span style="color:var(--red);font-size:11px;">✗</span>
+    </div>':'')+"
+    <div class="slabel">Approval Trail</div>
+    <div class="ast"><div class="adot ad-done">✓</div><div class="ainfo"><div class="atitle">VRF Submitted</div><div class="ameta">${v.date} · via magic link</div></div></div>
+    <div class="ast"><div class="adot ad-done">✓</div><div class="ainfo"><div class="atitle">Department Tagged</div><div class="ameta">${v.dept||'Pending mapping'} · Finance SPOC</div></div></div>
+    <div class="ast"><div class="adot ${v.stage==='Dept SPOC L1'?'ad-act':v.status==='Pending'||v.status==='Escalated'?'ad-done':'ad-done'}">
+      ${v.stage==='Dept SPOC L1'?'⏳':'✓'}
+    </div><div class="ainfo"><div class="atitle">Level 1 — Dept SPOC</div><div class="ameta">${v.stage==='Dept SPOC L1'?'Awaiting review':'Approved by Ankit Sharma'}</div>${v.stage!=='Dept SPOC L1'?'<div class="acmt">Documents verified.</div>':''}</div></div>
+    <div class="ast"><div class="adot ${v.status==='Approved'?'ad-done':v.stage==='Finance L2'?'ad-act':v.urgent?'ad-urg':'ad-idle'}">
+      ${v.status==='Approved'?'✓':v.urgent?'⚡':'⏳'}
+    </div><div class="ainfo"><div class="atitle">Level 2 — Finance SPOC</div><div class="ameta">${v.status==='Approved'?'Approved':v.stage==='Finance L2'?'Pending review':v.urgent?'Escalated to AVP':'Pending'}</div></div></div>
+    <div class="ast"><div class="adot ${v.status==='Approved'?'ad-done':'ad-idle'}">${v.status==='Approved'?'✓':'○'}</div>
+      <div class="ainfo"><div class="atitle">Vendor Code + NS Sync</div><div class="ameta">${v.status==='Approved'?'SR-2024-'+v.id.split('-')[2]+' · Synced to NetSuite':'Pending final approval'}</div></div></div>
+  `;
+  const canAct=(curRole.id==='finance'||curRole.id==='super')&&(v.status==='Pending'||v.status==='Escalated');
+  document.getElementById('vp-foot').innerHTML=canAct?`
+    <textarea id="rev-ta" placeholder="Add review comment…" style="height:48px;resize:none;flex:1;font-size:11px;"></textarea>
+    <button class="btn btn-ok btn-sm" onclick="doApprove()">✓ Approve</button>
+    <button class="btn btn-ng btn-sm" onclick="doReject()">✗ Reject</button>
+  `:`<span style="font-size:10px;color:var(--muted);">Status: ${v.status}</span><button class="btn btn-gh btn-sm" onclick="toast('Report downloaded','green')">⬇ Report</button>`;
+  document.getElementById('vendor-panel').classList.add('open');
+}
+function closePanel(){document.getElementById('vendor-panel').classList.remove('open');}
+function doApprove(){toast('✓ Vendor approved — NetSuite sync initiated','green');closePanel();}
+function doReject(){const c=document.getElementById('rev-ta')?.value;if(!c){toast('Add rejection reason first','amber');return;}toast('Vendor rejected — email sent','amber');closePanel();}
+
+// ═══════════════ SUBSIDIARIES ═══════════════
+function renderSubsidiaries(){
+  document.getElementById('sub-grid').innerHTML=SUBS.map((s,i)=>`
+    <div style="background:var(--surface);border:1px solid ${activeSub.name===s.name?s.color:'var(--border)'};border-radius:var(--rl);padding:18px;cursor:pointer;transition:.2s;position:relative;overflow:hidden;"
+      onmouseover="this.style.borderColor='${s.color}'" onmouseout="this.style.borderColor='${activeSub.name===s.name?s.color:'var(--border)'}'">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:${s.color};border-radius:var(--rl) var(--rl) 0 0;"></div>
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;">
+        <div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:3px;">${s.name}</div>
+          <div style="font-size:10px;color:var(--muted);">📍 ${s.loc} · NS: ${s.ns}</div>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          ${activeSub.name===s.name?'<span class="badge bo" style="font-size:9px;">Active</span>':''}
+          <label class="tgl green" onclick="event.stopPropagation()"><input type="checkbox" ${s.enabled?'checked':''} onchange="toggleSub(${i},this.checked)"/><div class="tgl-track"></div><div class="tgl-thumb"></div></label>
+        </div>
+      </div>
+      <div style="display:flex;gap:14px;margin-bottom:14px;">
+        <div><div style="font-size:16px;font-weight:700;">${s.vendors}</div><div style="font-size:9px;color:var(--muted);text-transform:uppercase;">Vendors</div></div>
+        <div><div style="font-size:16px;font-weight:700;color:var(--amber);">${s.pending}</div><div style="font-size:9px;color:var(--muted);text-transform:uppercase;">Pending</div></div>
+        <div><div style="font-size:16px;font-weight:700;color:var(--green);">${s.approved}</div><div style="font-size:9px;color:var(--muted);text-transform:uppercase;">Approved</div></div>
+        <div><div style="font-size:16px;font-weight:700;color:var(--red);">${s.rejected}</div><div style="font-size:9px;color:var(--muted);text-transform:uppercase;">Rejected</div></div>
+      </div>
+      <div style="display:flex;gap:6px;">
+        <button class="btn btn-gh btn-sm" style="flex:1;" onclick="event.stopPropagation();switchSub(${i})">Switch</button>
+        <button class="btn btn-gh btn-sm" onclick="event.stopPropagation();editSub(${i})">✏</button>
+        "+(curRole.id==='super'?'<button class="btn btn-ng btn-sm" onclick="event.stopPropagation();confirmDelete(\'subsidiary\',\''+(s.name)+'\','+(i)+')">🗑</button>':'')+"
+      </div>
+    </div>`).join('');
+}
+
+function switchSub(i){
+  activeSub=SUBS[i];
+  document.getElementById('sb-name').textContent=activeSub.short;
+  document.getElementById('sb-loc').textContent='📍 '+activeSub.loc;
+  document.getElementById('tb-sub').textContent=activeSub.short;
+  renderSubsidiaries();
+  toast('Switched to '+activeSub.name,'orange');
+}
+
+function toggleSub(i,on){
+  SUBS[i].enabled=on;
+  toast((on?'Enabled':'Disabled')+' '+SUBS[i].short,'amber');
+}
+
+function editSub(i){
+  const s=SUBS[i];
+  document.getElementById('edit-sub-title').textContent='Edit — '+s.short;
+  document.getElementById('edit-sub-body').innerHTML=`
+    <div class="g2" style="margin-bottom:12px;">
+      <div><label class="fl">Name</label><input value="${s.name}"/></div>
+      <div><label class="fl">Short Name</label><input value="${s.short}"/></div>
+      <div><label class="fl">Location</label><input value="${s.loc}"/></div>
+      <div><label class="fl">NS Entity ID</label><input value="${s.ns}"/></div>
+      <div><label class="fl">Finance SPOC</label><select>"+(['Rahul Kumar','Deepa Sharma','Vikram Rao'].map(x=>'<option'+(x===s.spoc?' selected':'')+'>'+(x)+'</option>').join(''))+"</select></div>
+      <div><label class="fl">Status</label><div style="display:flex;align-items:center;gap:10px;margin-top:8px;"><label class="tgl green"><input type="checkbox" ${s.enabled?'checked':''}/><div class="tgl-track"></div><div class="tgl-thumb"></div></label><span style="font-size:11px;">${s.enabled?'Enabled':'Disabled'}</span></div></div>
+    </div>`;
+  openModal('edit-sub-modal');
+}
+
+function addSubsidiary(){
+  const n=document.getElementById('sub-name-in')?.value;
+  const sh=document.getElementById('sub-short-in')?.value;
+  const l=document.getElementById('sub-loc-in')?.value;
+  if(!n||!l){toast('Fill required fields','amber');return;}
+  SUBS.push({name:n,short:sh||n.split(' ').map(w=>w[0]).join(''),loc:l,cin:document.getElementById('sub-cin-in')?.value||'',ns:document.getElementById('sub-ns-in')?.value||'',spoc:'—',color:'#6B7A99',vendors:0,pending:0,approved:0,rejected:0,enabled:true});
+  closeModal('add-sub-modal');
+  renderSubsidiaries();
+  renderMasterData();
+  toast('✓ Subsidiary added — '+n,'green');
+}
+
+// ═══════════════ MASTER DATA ═══════════════
+function renderMasterData(){
+  // Subsidiaries table
+  document.getElementById('sub-master-tbody').innerHTML=SUBS.map((s,i)=>`
+    <tr>
+      <td><div class="tn">${s.name}</div><div class="ts2 tm">${s.cin||'—'}</div></td>
+      <td style="font-size:11px;">📍 ${s.loc}</td>
+      <td class="tm">${s.ns}</td>
+      <td><span class="badge ${s.enabled?'bg':'br'}">${s.enabled?'Enabled':'Disabled'}</span></td>
+      <td>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-gh btn-sm" onclick="editSub(${i})">✏</button>
+          <label class="tgl green" style="cursor:pointer;"><input type="checkbox" ${s.enabled?'checked':''} onchange="toggleSub(${i},this.checked)"/><div class="tgl-track"></div><div class="tgl-thumb"></div></label>
+          "+(curRole.id==='super'?'<button class="btn btn-ng btn-sm" onclick="confirmDelete(\'subsidiary\',\''+(s.name)+'\','+(i)+')">🗑</button>':'')+"
+        </div>
+      </td>
+    </tr>`).join('');
+
+  // Depts table
+  document.getElementById('dept-master-tbody').innerHTML=DEPTS.map((d,i)=>`
+    <tr>
+      <td><span class="dept-tag dt-${d.color}">${d.name}</span></td>
+      <td><div class="tn" style="font-size:11px;">${d.spoc}</div><div class="ts2" style="font-size:9px;">${d.email}</div></td>
+      <td style="font-size:11px;font-weight:600;">${d.vendors}</td>
+      <td><span class="badge bg">Active</span></td>
+      <td>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-gh btn-sm" onclick="toast('Edit dept: ${d.name}','amber')">✏</button>
+          <button class="btn btn-ng btn-sm" onclick="confirmDelete('department','${d.name}',${i})">🗑</button>
+        </div>
+      </td>
+    </tr>`).join('');
+
+  // Entity types
+  document.getElementById('entity-list').innerHTML=ENTITY_TYPES.map((e,i)=>`
+    <div class="map-chip">${e}<span class="remove" onclick="removeEntity(${i})">✕</span></div>`).join('');
+
+  // Categories
+  document.getElementById('cat-list').innerHTML=CATEGORIES.map((c,i)=>`
+    <div class="map-chip">${c}<span class="remove" onclick="removeCat(${i})">✕</span></div>`).join('');
+}
+
+function addDept(){
+  const n=document.getElementById('dept-name-in')?.value;
+  if(!n){toast('Enter department name','amber');return;}
+  DEPTS.push({name:n,spoc:'—',email:'',color:selDeptColor,vendors:0});
+  closeModal('add-dept-modal');
+  renderMasterData();
+  renderDepartments();
+  toast('✓ Department added — '+n,'green');
+}
+
+function selectDeptColor(el,c){
+  selDeptColor=c;
+  el.closest('.mb').querySelectorAll('.dept-tag').forEach(t=>t.classList.remove('dt-selected'));
+  el.classList.add('dt-selected');
+}
+
+function addEntity(){
+  const n=document.getElementById('entity-name-in')?.value;
+  if(!n)return;
+  ENTITY_TYPES.push(n);
+  closeModal('add-entity-modal');
+  renderMasterData();
+  toast('Entity type added','green');
+}
+function removeEntity(i){ENTITY_TYPES.splice(i,1);renderMasterData();}
+function addCategory(){
+  const n=document.getElementById('cat-name-in')?.value;
+  if(!n)return;
+  CATEGORIES.push(n);
+  closeModal('add-cat-modal');
+  renderMasterData();
+  toast('Category added','green');
+}
+function removeCat(i){CATEGORIES.splice(i,1);renderMasterData();}
+
+// ═══════════════ DEPARTMENTS ═══════════════
+function renderDepartments(){
+  // Dept cards
+  document.getElementById('dept-map-cards').innerHTML=DEPTS.map((d,i)=>`
+    <div class="card">
+      <div class="ch"><div class="ct"><span class="dept-tag dt-${d.color}">${d.name}</span></div><span style="font-size:16px;font-weight:700;color:var(--text);">${d.vendors}</span></div>
+      <div class="cb">
+        <div class="fr"><span class="frl">SPOC</span><span class="frv">${d.spoc}</span></div>
+        <div class="fr"><span class="frl">Untagged vendors</span><span class="frv warn">${VENDORS.filter(v=>!v.dept&&v.status==='Pending').length}</span></div>
+        <div style="margin-top:10px;"><button class="btn btn-p btn-sm" style="width:100%;" onclick="openModal('map-dept-modal')">Tag Vendors</button></div>
+      </div>
+    </div>`).join('');
+
+  // Pending dept mapping table
+  const untagged=VENDORS.filter(v=>(!v.dept)&&v.status==='Pending');
+  const tagged=VENDORS.filter(v=>v.dept&&v.status==='Pending').slice(0,3);
+  const list=[...untagged,...tagged];
+  document.getElementById('dept-pending-tbody').innerHTML=list.map(v=>`
+    <tr>
+      <td><div class="tn">${v.name}</div><div class="ts2">${v.contact} · ${v.email}</div></td>
+      <td class="tm">${v.id}</td>
+      <td style="font-size:11px;color:var(--muted);">${v.date}</td>
+      <td>${v.dept?deptTag(v.dept):'<span class="badge ba">Untagged</span>'}</td>
+      <td>
+        "+(curRole.id==='finance'||curRole.id==='super'
+          ?'<button class="btn btn-p btn-sm" onclick="quickMapDept(\''+(v.id)+'\')">Map Dept →</button>'
+          :'<span style="font-size:10px;color:var(--muted);">Finance only</span>')+"
+      </td>
+    </tr>`).join('');
+
+  // Dept pick list in modal
+  const dpl=document.getElementById('dept-pick-list');
+  if(dpl) dpl.innerHTML=DEPTS.map(d=>`<div class="dept-tag dt-${d.color}" onclick="selectDept(this,'${d.name}')" style="cursor:pointer;">${d.name}</div>`).join('');
+  const ipl=document.getElementById('initiate-dept-pick');
+  if(ipl) ipl.innerHTML=DEPTS.map(d=>`<div class="dept-tag dt-${d.color}" onclick="selectDept(this,'${d.name}')" style="cursor:pointer;">${d.name}</div>`).join('');
+}
+
+let selDept='';
+function selectDept(el,name){
+  selDept=name;
+  el.closest('div').querySelectorAll('.dept-tag').forEach(t=>t.classList.remove('dt-selected'));
+  el.classList.add('dt-selected');
+}
+function mapDept(){
+  closeModal('map-dept-modal');
+  toast('✓ Vendor mapped to '+selDept+' — L1 magic link sent','green');
+}
+function quickMapDept(id){openModal('map-dept-modal');}
+
+// ═══════════════ USERS ═══════════════
+function renderUsers(){
+  document.getElementById('users-tbody').innerHTML=USERS.map((u,i)=>`
+    <tr>
+      <td><div style="display:flex;align-items:center;gap:8px;"><div class="av ${u.av}" style="width:26px;height:26px;font-size:9px;">${u.ini}</div><div><div class="tn">${u.name}</div></div></div></td>
+      <td><span class="badge ${u.role==='Super Admin'?'bo':u.role==='Finance SPOC'?'bb':u.role==='Dept SPOC'?'bg':u.role==='AVP Finance'?'bp':'bm'}">${u.role}</span></td>
+      <td style="font-size:11px;">${u.dept}</td>
+      <td><div style="display:flex;flex-wrap:wrap;gap:3px;">"+(u.sub.slice(0,2).map(s=>'<span class="badge bm" style="font-size:9px;">'+(s)+'</span>').join(''))+""+(u.sub.length>2?'<span class="badge bm" style="font-size:9px;">+'+(u.sub.length-2)+'</span>':'')+"</div></td>
+      <td><span class="badge ${u.on?'bg':'br'}">${u.on?'Active':'Inactive'}</span></td>
+      <td style="font-size:10px;color:var(--muted);">${u.active}</td>
+      <td><div style="display:flex;gap:5px;"><button class="btn btn-gh btn-sm" onclick="toast('Edit user: ${u.name}','amber')">Edit</button></div></td>
+    </tr>`).join('');
+}
+
+// ═══════════════ PERMISSIONS ═══════════════
+function renderPermissions(){
+  const icon=v=>v===1?'<span style="color:var(--green);font-size:13px;">✓</span>':v===2?'<span style="color:var(--amber);font-size:13px;">◑</span>':'<span style="color:var(--border);font-size:13px;">—</span>';
+  document.getElementById('perm-tbody').innerHTML=PERMS.map(p=>`<tr><td>${p.a}</td><td>${icon(p.s)}</td><td>${icon(p.f)}</td><td>${icon(p.d)}</td><td>${icon(p.v)}</td><td>${icon(p.vi)}</td></tr>`).join('');
+}
+
+// ═══════════════ INTEGRATIONS ═══════════════
+function renderIntegrations(){
+  // Non-NS grid
+  const others=INTEGRATIONS.filter(i=>i.name!=='NetSuite ERP');
+  document.getElementById('int-grid').innerHTML=others.map((it,i)=>`
+    <div class="int-card ${it.connected?'active-int':''} ${!it.enabled&&it.connected?'disabled-int':''}">
+      <div class="int-pulse ${it.connected&&it.enabled?'live':it.connected&&!it.enabled?'warn':'off'}"></div>
+      <div class="int-logo" style="background:${it.color}22;font-size:20px;">${it.logo}</div>
+      <div class="int-name">${it.name}</div>
+      <div class="int-desc">${it.desc}</div>
+      <div class="int-status-row">
+        <div class="int-meta">"+(it.connected?''+(it.vendors)+' vendors · '+(it.lastSync)+'':'Not connected')+"</div>
+        "+(it.connected
+          ?'<label class="tgl green"><input type="checkbox" '+(it.enabled?'checked':'')+' onchange="toggleInt('+(i+1)+',this.checked)"/><div class="tgl-track"></div><div class="tgl-thumb"></div></label>'
+          :'<button class="btn btn-gh btn-sm" onclick="connectInt('+(i+1)+')">Connect</button>')+"
+      </div>
+      "+(it.connected?'<div style="display:flex;gap:5px;margin-top:10px;">
+        <button class="btn btn-gh btn-sm" onclick="toast(\'Configuring '+(it.name)+'…\',\'amber\')" style="flex:1;">Configure</button>
+        <button class="btn btn-gh btn-sm" onclick="syncInt('+(i+1)+')">↻</button>
+        <button class="btn btn-ng btn-sm btn-icon" onclick="disconnectInt('+(i+1)+')">✕</button>
+      </div>':'')+"
+    </div>`).join('');
+
+  // Quick connect grid in modal
+  const qg=document.getElementById('quick-int-grid');
+  if(qg) qg.innerHTML=INTEGRATIONS.filter(i=>!i.connected).map((it,idx)=>`
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:12px;text-align:center;cursor:pointer;transition:.15s;" onmouseover="this.style.borderColor='var(--muted2)'" onmouseout="this.style.borderColor='var(--border)'"
+      onclick="quickConnect('${it.name}')">
+      <div style="font-size:24px;margin-bottom:6px;">${it.logo}</div>
+      <div style="font-size:11px;font-weight:600;">${it.name}</div>
+    </div>`).join('');
+}
+
+function toggleNS(on){
+  INTEGRATIONS[0].enabled=on;
+  document.getElementById('ns-toggle').checked=on;
+  document.getElementById('ns-master-toggle').checked=on;
+  document.getElementById('ns-live-badge').className=on?'badge bg':'badge br';
+  document.getElementById('ns-live-badge').textContent=on?'● Live':'● Disabled';
+  document.getElementById('ns-disable-btn').textContent=on?'⏸ Disable Integration':'▶ Enable Integration';
+  document.getElementById('ns-sync-health').style.color=on?'var(--green)':'var(--red)';
+  document.getElementById('ns-sync-health').textContent=on?'✓ All records in sync':'⚠ Sync disabled';
+  toast(on?'NetSuite sync enabled':'⚠ NetSuite sync DISABLED — vendor masters will not auto-create', on?'green':'amber');
+}
+
+function toggleInt(i,on){INTEGRATIONS[i].enabled=on;toast((on?'Enabled':'Disabled')+' — '+INTEGRATIONS[i].name,'amber');renderIntegrations();}
+function connectInt(i){INTEGRATIONS[i].connected=true;INTEGRATIONS[i].enabled=true;INTEGRATIONS[i].lastSync='Just now';renderIntegrations();toast('✓ '+INTEGRATIONS[i].name+' connected','green');}
+function disconnectInt(i){confirmDelete('integration',INTEGRATIONS[i].name,i);}
+function syncInt(i){toast('↻ Syncing '+INTEGRATIONS[i].name+'…','amber');}
+function quickConnect(n){closeModal('add-int-modal');const i=INTEGRATIONS.findIndex(x=>x.name===n);if(i>=0){INTEGRATIONS[i].connected=true;INTEGRATIONS[i].enabled=true;}renderIntegrations();toast('✓ '+n+' connected — configure API keys','green');}
+function addCustomInt(){const n=document.getElementById('ci-name')?.value;const u=document.getElementById('ci-url')?.value;if(!n||!u){toast('Enter name and API URL','amber');return;}INTEGRATIONS.push({name:n,logo:'🔌',color:'#6B7A99',desc:u,enabled:true,connected:true,vendors:0,lastSync:'Just now'});renderIntegrations();toast('✓ '+n+' integration added','green');}
+function testNS(){toast('▶ Testing NetSuite connection…','amber');setTimeout(()=>toast('✓ NetSuite connection successful — latency 42ms','green'),1500);}
+function syncNS(){toast('↻ Syncing all vendors to NetSuite…','amber');setTimeout(()=>toast('✓ 142 vendor records synced','green'),2000);}
+
+// ═══════════════ ROLE SWITCHER ═══════════════
+function renderRoleList(){
+  document.getElementById('role-list').innerHTML=ROLES.map(r=>`
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--r);border:1px solid ${curRole.id===r.id?'var(--orange)':'var(--border)'};background:${curRole.id===r.id?'var(--orange-d)':'var(--surface2)'};cursor:pointer;transition:.12s;"
+      onclick="setRole('${r.id}')">
+      <div class="av ${r.av}">${r.ini}</div>
+      <div style="flex:1;"><div style="font-size:12px;font-weight:600;">${r.name}</div><div style="font-size:10px;color:var(--muted);">${r.id==='finance'?'L2 approval — Shiprocket Limited':r.id==='dept'?'L1 approval — Procurement':r.id==='avp'?'Urgent override':r.id==='super'?'Full portal access':'Read only'}</div></div>
+      ${curRole.id===r.id?'<span class="badge bo" style="font-size:9px;">Active</span>':''}
+    </div>`).join('');
+}
+function setRole(id){
+  curRole=ROLES.find(r=>r.id===id);
+  document.getElementById('sb-av').textContent=curRole.ini;
+  document.getElementById('sb-av').className='av '+curRole.av;
+  document.getElementById('sb-uname').textContent=curRole.name;
+  document.getElementById('sb-urole').textContent=curRole.name;
+  document.getElementById('tb-av').textContent=curRole.ini;
+  document.getElementById('tb-av').className='av '+curRole.av;
+  document.getElementById('tb-role').className='badge '+curRole.badge;
+  document.getElementById('tb-role').textContent=curRole.name;
+  closeModal('role-modal');
+  toast('Viewing as: '+curRole.name,'orange');
+}
+
+// ═══════════════ CONFIRM DELETE ═══════════════
+function confirmDelete(type,name,idx){
+  document.getElementById('confirm-icon').textContent='🗑';
+  document.getElementById('confirm-title').textContent='Delete '+type;
+  document.getElementById('confirm-msg').innerHTML=`<strong>${name}</strong> will be permanently removed.<br>This action cannot be undone.`;
+  document.getElementById('confirm-ok-btn').onclick=()=>{
+    if(type==='subsidiary'){SUBS.splice(idx,1);renderSubsidiaries();renderMasterData();}
+    if(type==='department'){DEPTS.splice(idx,1);renderMasterData();renderDepartments();}
+    if(type==='integration'){INTEGRATIONS[idx].connected=false;INTEGRATIONS[idx].enabled=false;renderIntegrations();}
+    document.getElementById('confirm-overlay').classList.remove('open');
+    toast(name+' removed','amber');
+  };
+  document.getElementById('confirm-overlay').classList.add('open');
+}
+
+// ═══════════════ MODAL UTILS ═══════════════
+function openModal(id){
+  if(id==='role-modal') renderRoleList();
+  if(id==='map-dept-modal') renderDepartments();
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+
+// ═══════════════ TOAST ═══════════════
+function toast(msg,type='orange'){
+  const el=document.getElementById('toast-el');
+  const dot=document.getElementById('toast-dot');
+  el.className='toast show';
+  dot.style.background=type==='green'?'var(--green)':type==='amber'?'var(--amber)':type==='red'?'var(--red)':'var(--orange)';
+  document.getElementById('toast-msg').textContent=msg;
+  setTimeout(()=>el.classList.remove('show'),3500);
+}
+
+
+// ═══════════════ STAT DRILL-DOWN ═══════════════
+
+const DRILL_CONFIG = {
+  total: {
+    title: 'All Vendors',
+    subtitle: 'Complete vendor registry across all subsidiaries',
+    icon: '▦', iconBg: 'rgba(107,122,153,.15)', iconColor: 'var(--muted)',
+    badgeCls: 'bm',
+    filter: v => true,
+    accentVar: 'var(--muted)',
+    cols: ['Vendor','VRF ID','Department','Subsidiary','Entity','Status','Completion'],
+  },
+  pending: {
+    title: 'Pending Vendors',
+    subtitle: 'Awaiting department mapping, L1 or L2 approval',
+    icon: '⏳', iconBg: 'var(--amber-d)', iconColor: 'var(--amber)',
+    badgeCls: 'ba',
+    filter: v => v.status === 'Pending' || v.status === 'Escalated',
+    accentVar: 'var(--amber)',
+    cols: ['Vendor','VRF ID','Department','Stage','Days Pending','Completion','Action'],
+  },
+  approved: {
+    title: 'Approved Vendors',
+    subtitle: 'All vendors with final approval — synced to NetSuite',
+    icon: '✓', iconBg: 'var(--green-d)', iconColor: 'var(--green)',
+    badgeCls: 'bg',
+    filter: v => v.status === 'Approved',
+    accentVar: 'var(--green)',
+    cols: ['Vendor','VRF ID','Vendor Code','Department','Subsidiary','GST / PAN','Approved On'],
+  },
+  rejected: {
+    title: 'Rejected Vendors',
+    subtitle: 'Vendors rejected — can be re-submitted after corrections',
+    icon: '✗', iconBg: 'var(--red-d)', iconColor: 'var(--red)',
+    badgeCls: 'br',
+    filter: v => v.status === 'Rejected',
+    accentVar: 'var(--red)',
+    cols: ['Vendor','VRF ID','Department','Rejection Reason','Completion','Action'],
+  },
+  escalated: {
+    title: 'AVP Escalated',
+    subtitle: 'Urgent approvals escalated to AVP Finance — action required',
+    icon: '⚡', iconBg: 'var(--orange-d)', iconColor: 'var(--orange)',
+    badgeCls: 'bo',
+    filter: v => v.status === 'Escalated' || v.urgent,
+    accentVar: 'var(--orange)',
+    cols: ['Vendor','VRF ID','Department','Escalated To','Days Open','Completion','Action'],
+  },
+};
+
+let currentDrillType = null;
+let drillSearchQuery = '';
+
+function openStatDrill(type) {
+  // Toggle — click same card again to close
+  if (currentDrillType === type) { closeDrill(); return; }
+
+  currentDrillType = type;
+  drillSearchQuery = '';
+  document.getElementById('drill-search').value = '';
+
+  // Mark active stat card
+  document.querySelectorAll('.sc-clickable').forEach(c => c.classList.remove('active-sc'));
+  document.getElementById('sc-' + type)?.classList.add('active-sc');
+
+  const cfg = DRILL_CONFIG[type];
+  const vendors = VENDORS.filter(cfg.filter);
+
+  // Update panel header
+  document.getElementById('drill-icon').textContent = cfg.icon;
+  document.getElementById('drill-icon').style.background = cfg.iconBg;
+  document.getElementById('drill-icon').style.color = cfg.iconColor;
+  document.getElementById('drill-title').textContent = cfg.title;
+  document.getElementById('drill-subtitle').textContent = cfg.subtitle;
+
+  const badge = document.getElementById('drill-count-badge');
+  badge.textContent = vendors.length + ' vendor' + (vendors.length !== 1 ? 's' : '');
+
+  // Style badge per type
+  const badgeStyles = {
+    total:    ['rgba(107,122,153,.15)','var(--muted)','rgba(107,122,153,.2)'],
+    pending:  ['var(--amber-d)','var(--amber)','rgba(251,191,36,.2)'],
+    approved: ['var(--green-d)','var(--green)','rgba(52,211,153,.2)'],
+    rejected: ['var(--red-d)','var(--red)','rgba(248,113,113,.2)'],
+    escalated:['var(--orange-d)','var(--orange)','rgba(255,107,53,.2)'],
+  };
+  const [bg, col, bdr] = badgeStyles[type];
+  badge.style.cssText = `font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;background:${bg};color:${col};border:1px solid ${bdr};`;
+
+  // Render summary chips
+  renderDrillChips(type, vendors);
+
+  // Render table
+  renderDrillTable(type, vendors);
+
+  // Footer
+  renderDrillFooter(type, vendors);
+
+  // Show panel
+  const wrap = document.getElementById('stat-drill-wrap');
+  wrap.style.display = 'block';
+
+  // Smooth scroll to panel
+  setTimeout(() => wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+}
+
+function closeDrill() {
+  document.getElementById('stat-drill-wrap').style.display = 'none';
+  document.querySelectorAll('.sc-clickable').forEach(c => c.classList.remove('active-sc'));
+  currentDrillType = null;
+  drillSearchQuery = '';
+}
+
+function filterDrill(q) {
+  drillSearchQuery = q.toLowerCase();
+  if (!currentDrillType) return;
+  const cfg = DRILL_CONFIG[currentDrillType];
+  const vendors = VENDORS.filter(cfg.filter).filter(v =>
+    !drillSearchQuery ||
+    v.name.toLowerCase().includes(drillSearchQuery) ||
+    v.id.toLowerCase().includes(drillSearchQuery) ||
+    (v.dept||'').toLowerCase().includes(drillSearchQuery) ||
+    v.pan.toLowerCase().includes(drillSearchQuery) ||
+    v.gstin.toLowerCase().includes(drillSearchQuery)
+  );
+  renderDrillTable(currentDrillType, vendors);
+  renderDrillFooter(currentDrillType, vendors);
+}
+
+function renderDrillChips(type, vendors) {
+  const el = document.getElementById('drill-chips');
+  if (!el) return;
+
+  const chips = [];
+
+  if (type === 'approved') {
+    // Break down by subsidiary
+    const subs = {};
+    vendors.forEach(v => { subs[v.sub] = (subs[v.sub]||0)+1; });
+    Object.entries(subs).forEach(([sub, cnt]) => {
+      const cls = sub==='SR Limited'?'bo':sub==='SR Internet'?'bb':'bg';
+      chips.push(`<span class="badge ${cls}" style="font-size:10px;">${sub}: ${cnt}</span>`);
+    });
+    // By entity
+    const ents = {};
+    vendors.forEach(v => { ents[v.entity] = (ents[v.entity]||0)+1; });
+    Object.entries(ents).forEach(([e,c]) => chips.push(`<span class="badge bm" style="font-size:10px;">${e}: ${c}</span>`));
+    // 100% completion
+    const full = vendors.filter(v=>v.pct===100).length;
+    chips.push(`<span class="badge bg" style="font-size:10px;">100% complete: ${full}</span>`);
+    // NS synced
+    chips.push(`<span class="badge bb" style="font-size:10px;">NetSuite synced: ${vendors.length}</span>`);
+  } else if (type === 'pending') {
+    const stages = {};
+    vendors.forEach(v => { stages[v.stage] = (stages[v.stage]||0)+1; });
+    Object.entries(stages).forEach(([s,c]) => chips.push(`<span class="badge ba" style="font-size:10px;">${s}: ${c}</span>`));
+    const untagged = vendors.filter(v=>!v.dept).length;
+    if (untagged) chips.push(`<span class="badge br" style="font-size:10px;">Untagged: ${untagged}</span>`);
+  } else if (type === 'rejected') {
+    const pctLow = vendors.filter(v=>v.pct<60).length;
+    chips.push(`<span class="badge br" style="font-size:10px;">Docs incomplete (<60%): ${pctLow}</span>`);
+    chips.push(`<span class="badge ba" style="font-size:10px;">Can re-submit: ${vendors.length}</span>`);
+  } else if (type === 'escalated') {
+    chips.push(`<span class="badge bo" style="font-size:10px;">AVP magic link sent: ${vendors.length}</span>`);
+    chips.push(`<span class="badge br" style="font-size:10px;">Docs incomplete: ${vendors.filter(v=>v.pct<80).length}</span>`);
+  } else if (type === 'total') {
+    const a = vendors.filter(v=>v.status==='Approved').length;
+    const p = vendors.filter(v=>v.status==='Pending'||v.status==='Escalated').length;
+    const r = vendors.filter(v=>v.status==='Rejected').length;
+    chips.push(`<span class="badge bg" style="font-size:10px;">Approved: ${a}</span>`);
+    chips.push(`<span class="badge ba" style="font-size:10px;">Pending: ${p}</span>`);
+    chips.push(`<span class="badge br" style="font-size:10px;">Rejected: ${r}</span>`);
+  }
+
+  el.innerHTML = chips.join('');
+}
+
+function vendorCode(v) {
+  return v.status === 'Approved' ? 'SR-2024-' + v.id.split('-')[2] : '—';
+}
+
+function daysAgo(dateStr) {
+  const months = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+  const parts = dateStr.split(' ');
+  const d = new Date(parseInt(parts[2]), months[parts[1]], parseInt(parts[0]));
+  return Math.floor((Date.now() - d.getTime()) / 86400000);
+}
+
+function renderDrillTable(type, vendors) {
+  const cfg = DRILL_CONFIG[type];
+  const thead = document.getElementById('drill-thead');
+  const tbody = document.getElementById('drill-tbody');
+  if (!thead || !tbody) return;
+
+  thead.innerHTML = '<tr>' + cfg.cols.map(function(c){ return '<th>' + c + '</th>'; }).join('') + '</tr>';
+
+  if (vendors.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="' + cfg.cols.length + '" style="text-align:center;padding:32px;color:var(--muted);font-size:12px;">No vendors found</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = vendors.map(function(v) {
+    var idx = VENDORS.indexOf(v);
+    var days = daysAgo(v.date);
+    var pctCol = v.pct>=90?'var(--green)':v.pct>=70?'var(--amber)':'var(--red)';
+    var pctBar = '<div style="display:flex;align-items:center;gap:6px;">'
+      + '<div style="width:50px;height:4px;border-radius:2px;background:var(--border);overflow:hidden;">'
+      + '<div style="width:'+v.pct+'%;height:100%;background:'+pctCol+';border-radius:2px;"></div></div>'
+      + '<span style="font-size:10px;font-weight:700;color:'+pctCol+';">'+v.pct+'%</span></div>';
+
+    var subMap = {'SR Limited':'bo','SR Internet':'bb'};
+    var subCls = subMap[v.sub] || 'bg';
+    var subBadge = '<span class="badge '+subCls+'" style="font-size:9px;">'+v.sub+'</span>';
+
+    var deptColorMap = {Procurement:'blue',Logistics:'purple',Operations:'teal',Finance:'green',Technology:'pink'};
+    var deptCol = deptColorMap[v.dept] || 'amber';
+    var deptBadge = v.dept
+      ? '<span class="dept-tag dt-'+deptCol+'" style="font-size:9px;">'+v.dept+'</span>'
+      : '<span class="badge bm" style="font-size:9px;">Untagged</span>';
+
+    var nameCell = '<td onclick="openVendorPanel('+idx+')" style="cursor:pointer;">'
+      + '<div style="font-size:11px;font-weight:600;">'+v.name+(v.urgent?'<span style="color:var(--orange);margin-left:4px;">⚡</span>':'')+'</div>'
+      + '<div class="drill-vc">'+v.contact+' · '+v.email+'</div></td>';
+    var idCell = '<td><span class="tm" style="font-size:10px;">'+v.id+'</span></td>';
+    var deptCell = '<td>'+deptBadge+'</td>';
+
+    var cells = '';
+    if (type === 'approved') {
+      cells = nameCell + idCell
+        + '<td><span style="font-family:var(--mono);font-size:10px;color:var(--green);font-weight:600;">'+vendorCode(v)+'</span></td>'
+        + deptCell
+        + '<td>'+subBadge+'</td>'
+        + '<td><div style="font-size:10px;font-family:var(--mono);">'+v.gstin+'</div>'
+        + '<div style="font-size:9px;color:var(--muted);font-family:var(--mono);">'+v.pan+'</div></td>'
+        + '<td style="font-size:10px;color:var(--muted);">'+v.date+'</td>';
+    } else if (type === 'pending') {
+      var dayCol = days>10?'var(--red)':days>5?'var(--amber)':'var(--green)';
+      cells = nameCell + idCell + deptCell
+        + '<td><span class="badge ba" style="font-size:9px;">'+v.stage+'</span></td>'
+        + '<td style="font-size:11px;font-weight:600;color:'+dayCol+';">'+days+'d</td>'
+        + '<td>'+pctBar+'</td>'
+        + '<td><button class="btn btn-p btn-sm" onclick="openVendorPanel('+idx+')">Review →</button></td>';
+    } else if (type === 'rejected') {
+      cells = nameCell + idCell + deptCell
+        + '<td style="font-size:10px;color:var(--muted);">Docs incomplete / missing ITR</td>'
+        + '<td>'+pctBar+'</td>'
+        + '<td><button class="btn btn-gh btn-sm" onclick="toast(\'Magic link resent\',\'orange\')">Re-invite</button></td>';
+    } else if (type === 'escalated') {
+      cells = nameCell + idCell + deptCell
+        + '<td style="font-size:10px;font-weight:600;">Ravi Kapoor (AVP)</td>'
+        + '<td style="font-size:11px;font-weight:600;color:var(--orange);">'+days+'d</td>'
+        + '<td>'+pctBar+'</td>'
+        + '<td><button class="btn btn-warn btn-sm" onclick="toast(\'Reminder sent\',\'orange\')">Remind</button></td>';
+    } else {
+      var stBadge = '<span class="badge '+statusBadge(v.status)+'">'+v.status+'</span>';
+      var entBadge = '<span class="badge bm" style="font-size:9px;">'+v.entity+'</span>';
+      cells = nameCell + idCell + deptCell
+        + '<td>'+subBadge+'</td>'
+        + '<td>'+entBadge+'</td>'
+        + '<td>'+stBadge+'</td>'
+        + '<td>'+pctBar+'</td>';
+    }
+
+    return '<tr>' + cells + '</tr>';
+  }).join('');
+}
+
+function renderDrillFooter(type, vendors) {
+  const left = document.getElementById('drill-footer-left');
+  const actions = document.getElementById('drill-footer-actions');
+  if (!left || !actions) return;
+
+  left.textContent = `${vendors.length} vendor${vendors.length!==1?'s':''} ${drillSearchQuery ? '(filtered)' : ''}`;
+
+  const exportBtn = `<button class="btn btn-gh btn-sm" onclick="toast('Exporting ${type} vendors to CSV…','amber')">⬇ Export CSV</button>`;
+  const viewAllBtn = `<button class="btn btn-p btn-sm" onclick="closeDrill();nav(null,'vendors')">View all in Vendor List →</button>`;
+
+  if (type === 'approved') {
+    actions.innerHTML = exportBtn +
+      `<button class="btn btn-gh btn-sm" onclick="toast('Syncing to NetSuite…','amber')">↻ Sync to NS</button>` +
+      viewAllBtn;
+  } else if (type === 'pending') {
+    actions.innerHTML = exportBtn +
+      `<button class="btn btn-warn btn-sm" onclick="toast('Reminder sent to all pending vendors','orange')">Send reminders</button>` +
+      viewAllBtn;
+  } else if (type === 'rejected') {
+    actions.innerHTML = exportBtn +
+      `<button class="btn btn-gh btn-sm" onclick="toast('Re-invite sent to all rejected vendors','green')">Re-invite all</button>` +
+      viewAllBtn;
+  } else if (type === 'escalated') {
+    actions.innerHTML =
+      `<button class="btn btn-warn btn-sm" onclick="toast('AVP reminder sent for all escalations','orange')">Remind all AVPs</button>` +
+      viewAllBtn;
+  } else {
+    actions.innerHTML = exportBtn + viewAllBtn;
+  }
+}
+// ═══════════════ INIT ═══════════════
+renderVendors();
+renderUsers();
+renderPermissions();
+renderSubsidiaries();
+renderMasterData();
+renderDepartments();
+renderIntegrations();
+
+// ── MIDNIGHT ORANGE LIVE ANIMATIONS ──
+(function(){
+  // Animated stat counter on dashboard load
+  function animateCounters(){
+    document.querySelectorAll('.sn').forEach(el=>{
+      const target=parseInt(el.textContent)||0;
+      if(!target||el.dataset.animated) return;
+      el.dataset.animated=1;
+      let cur=0;
+      const step=Math.ceil(target/28);
+      const timer=setInterval(()=>{
+        cur=Math.min(cur+step,target);
+        el.textContent=cur;
+        if(cur>=target) clearInterval(timer);
+      },18);
+    });
+  }
+  setTimeout(animateCounters, 300);
+
+  // Orange glow pulse on active nav item
+  const style=document.createElement('style');
+  style.textContent=`
+    @keyframes sidebar-glow{0%,100%{box-shadow:inset 3px 0 0 rgba(255,107,53,0.6)}50%{box-shadow:inset 3px 0 0 rgba(255,107,53,1),0 0 12px rgba(255,107,53,0.15)}}
+    .ni.on{animation:sidebar-glow 2.5s ease-in-out infinite;}
+    @keyframes brand-glow{0%,100%{box-shadow:0 0 12px rgba(255,107,53,0.35),0 0 24px rgba(255,107,53,0.1)}50%{box-shadow:0 0 22px rgba(255,107,53,0.65),0 0 44px rgba(255,107,53,0.2)}}
+    .brand-mark{animation:brand-glow 3s ease-in-out infinite;}
+    @keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(0.85)}}
+    .int-pulse.live{animation:pulse-dot 1.8s ease-in-out infinite;}
+    .sc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(255,107,53,0.5),transparent);opacity:0;transition:.3s;}
+    .sc:hover::before{opacity:1;}
+    tbody tr{transition:background .1s;}
+    .card{transition:border-color .2s,box-shadow .2s;}
+    .card:hover{border-color:rgba(255,107,53,0.2);box-shadow:0 0 0 1px rgba(255,107,53,0.06);}
+    .btn-p{transition:all .2s;}
+    .ni{transition:background .12s,color .12s;}
+    thead th{font-size:9px;letter-spacing:.8px;}
+    .badge.bo{box-shadow:0 0 8px rgba(255,107,53,0.12);}
+    .sub-switcher{transition:border-color .15s,box-shadow .15s;}
+    .sub-switcher:hover{box-shadow:0 0 0 1px rgba(255,107,53,0.2);}
+  `;
+  document.head.appendChild(style);
+
+  // Re-run counter when switching to dashboard
+  const origNav=window.nav;
+  window.nav=function(el,id){
+    origNav(el,id);
+    if(id==='dashboard') setTimeout(animateCounters,250);
+  };
+})();
+
+// ══════════ THEME ENGINE ══════════
+const THEMES = {
+  'midnight-orange': {
+    name: 'Midnight Orange',
+    desc: 'Dark base with energetic orange — bold, professional, and high-contrast',
+    accent: '#FF6B35',
+    bg: '#0A0D13', surface: '#0F1520', surface2: '#161D2E',
+    border: '#242E44', border2: '#182030',
+    text: '#E8EEFF', muted: '#6A7A9B', muted2: '#3A4860',
+    accentD: 'rgba(255,107,53,0.14)', accentG: 'rgba(255,107,53,0.32)',
+    scrollThumb: 'rgba(255,107,53,0.22)',
+    logoGrad: ['#FF8C5A','#E8501A'], label: 'Midnight Orange · v3.1'
+  },
+  'shiprocket': {
+    name: 'Shiprocket Official',
+    desc: 'The authentic Shiprocket brand palette — orange on crisp white, clean and trusted',
+    accent: '#F05929',
+    bg: '#F5F6F8', surface: '#FFFFFF', surface2: '#F0F2F5',
+    border: '#E2E6EC', border2: '#EBF0F5',
+    text: '#1A2332', muted: '#6B7A8D', muted2: '#A0AABB',
+    accentD: 'rgba(240,89,41,0.1)', accentG: 'rgba(240,89,41,0.25)',
+    scrollThumb: 'rgba(240,89,41,0.3)',
+    logoGrad: ['#FF7043','#F05929'], label: 'Shiprocket Official',
+    light: true
+  },
+  'ocean-blue': {
+    name: 'Ocean Blue',
+    desc: 'Deep navy with electric blue — calm, corporate, and trustworthy',
+    accent: '#3B82F6',
+    bg: '#0B1426', surface: '#0F1F3D', surface2: '#162040',
+    border: '#1E2E50', border2: '#14203C',
+    text: '#E0EEFF', muted: '#4A6080', muted2: '#2A3A58',
+    accentD: 'rgba(59,130,246,0.14)', accentG: 'rgba(59,130,246,0.32)',
+    scrollThumb: 'rgba(59,130,246,0.25)',
+    logoGrad: ['#60A5FA','#2563EB'], label: 'Ocean Blue'
+  },
+  'emerald-pro': {
+    name: 'Emerald Pro',
+    desc: 'Rich dark green — finance-grade authority and calm precision',
+    accent: '#10B981',
+    bg: '#061612', surface: '#082620', surface2: '#0D3028',
+    border: '#163D2E', border2: '#0D2820',
+    text: '#D1FAE5', muted: '#3D6B5A', muted2: '#1E4038',
+    accentD: 'rgba(16,185,129,0.14)', accentG: 'rgba(16,185,129,0.32)',
+    scrollThumb: 'rgba(16,185,129,0.25)',
+    logoGrad: ['#34D399','#059669'], label: 'Emerald Pro'
+  },
+  'royal-violet': {
+    name: 'Royal Violet',
+    desc: 'Deep purple luxury — premium SaaS feel for executive workflows',
+    accent: '#8B5CF6',
+    bg: '#0C0814', surface: '#130D20', surface2: '#1A1030',
+    border: '#261848', border2: '#180E38',
+    text: '#EDE9FF', muted: '#5B4B7A', muted2: '#362858',
+    accentD: 'rgba(139,92,246,0.14)', accentG: 'rgba(139,92,246,0.32)',
+    scrollThumb: 'rgba(139,92,246,0.25)',
+    logoGrad: ['#A78BFA','#7C3AED'], label: 'Royal Violet'
+  },
+  'crimson': {
+    name: 'Crimson Dark',
+    desc: 'Dramatic red accent — decisive action, high urgency clarity',
+    accent: '#EF4444',
+    bg: '#0F0A0A', surface: '#1A0F0F', surface2: '#251414',
+    border: '#3A1E1E', border2: '#2A1414',
+    text: '#FEE2E2', muted: '#6B4040', muted2: '#3A2020',
+    accentD: 'rgba(239,68,68,0.14)', accentG: 'rgba(239,68,68,0.32)',
+    scrollThumb: 'rgba(239,68,68,0.25)',
+    logoGrad: ['#FCA5A5','#DC2626'], label: 'Crimson Dark'
+  }
+};
+
+let selectedThemeId = 'midnight-orange';
+let activeThemeId = 'midnight-orange';
+
+function buildThemeGrid() {
+  const grid = document.getElementById('theme-grid');
+  if (!grid) return;
+  grid.innerHTML = Object.entries(THEMES).map(([id, t]) => {
+    const isLight = t.light;
+    const textCol = isLight ? t.text : t.text;
+    const mutedCol = isLight ? t.muted : t.muted;
+    return `<div class="theme-card ${id === selectedThemeId ? 'tc-selected' : ''}"
+      style="border-color:${id===selectedThemeId ? t.accent : ''}"
+      onclick="selectTheme('${id}')">
+      <div class="tc-preview" style="background:${t.bg};">
+        <div class="tc-sb" style="background:${t.surface};">
+          <div style="width:18px;height:18px;border-radius:5px;background:${t.accent};margin-bottom:5px;box-shadow:0 0 8px ${t.accentG};"></div>
+          <div class="tc-nd" style="background:${t.accent};width:75%;opacity:.9;"></div>
+          <div class="tc-nd" style="background:${mutedCol};width:60%;opacity:.5;"></div>
+          <div class="tc-nd" style="background:${mutedCol};width:55%;opacity:.4;"></div>
+          <div class="tc-nd" style="background:${mutedCol};width:65%;opacity:.35;margin-top:3px;"></div>
+          <div class="tc-nd" style="background:${mutedCol};width:50%;opacity:.3;"></div>
+        </div>
+        <div class="tc-main-area" style="background:${t.bg};">
+          <div class="tc-stat-r">
+            <div class="tc-stat-b" style="background:${t.surface};border:1px solid ${t.border};"></div>
+            <div class="tc-stat-b" style="background:${t.accentD};border:1px solid ${t.accent}44;"></div>
+            <div class="tc-stat-b" style="background:${t.surface};border:1px solid ${t.border};"></div>
+          </div>
+          <div class="tc-row" style="background:${mutedCol};opacity:.25;width:90%;"></div>
+          <div class="tc-row" style="background:${mutedCol};opacity:.18;width:75%;"></div>
+          <div class="tc-row" style="background:${t.accent};opacity:.3;width:60%;"></div>
+          <div style="height:10px;width:45%;border-radius:4px;background:${t.accent};margin-top:3px;opacity:.85;"></div>
+        </div>
+      </div>
+      <div class="tc-info" style="background:${isLight ? t.surface2 : t.surface};">
+        <div class="tc-name" style="color:${textCol};">${t.name}</div>
+        <div class="tc-desc" style="color:${mutedCol};">${t.desc}</div>
+      </div>
+      <div class="tc-check" style="background:${t.accent};color:${isLight?'#fff':'#fff'};">✓</div>
+    </div>`;
+  }).join('');
+
+  // Update preview panel
+  const t = THEMES[selectedThemeId];
+  const sp = document.getElementById('theme-preview-swatch');
+  if (sp) sp.style.background = `linear-gradient(135deg,${t.logoGrad[0]},${t.logoGrad[1]})`;
+  const sn = document.getElementById('theme-preview-name');
+  if (sn) sn.textContent = t.name;
+  const sd = document.getElementById('theme-preview-desc');
+  if (sd) sd.textContent = t.desc;
+  const ab = document.getElementById('theme-apply-btn');
+  if (ab) ab.style.background = t.accent;
+}
+
+function selectTheme(id) {
+  selectedThemeId = id;
+  buildThemeGrid();
+}
+
+function applySelectedTheme() {
+  activeThemeId = selectedThemeId;
+  const t = THEMES[activeThemeId];
+  const root = document.documentElement;
+
+  root.style.setProperty('--bg',       t.bg);
+  root.style.setProperty('--surface',  t.surface);
+  root.style.setProperty('--surface2', t.surface2);
+  root.style.setProperty('--border',   t.border);
+  root.style.setProperty('--border2',  t.border2);
+  root.style.setProperty('--text',     t.text);
+  root.style.setProperty('--muted',    t.muted);
+  root.style.setProperty('--muted2',   t.muted2);
+  root.style.setProperty('--orange',   t.accent);
+  root.style.setProperty('--orange-d', t.accentD);
+  root.style.setProperty('--orange-g', t.accentG);
+
+  // Update logo gradient
+  const grad = document.getElementById('sr-grad');
+  if (grad) {
+    grad.querySelector('stop:first-child').setAttribute('stop-color', t.logoGrad[0]);
+    grad.querySelector('stop:last-child').setAttribute('stop-color', t.logoGrad[1]);
+  }
+
+  // Update brand label
+  const lbl = document.getElementById('brand-theme-label');
+  if (lbl) lbl.textContent = t.label;
+
+  // Update theme dot colour
+  const dot = document.getElementById('theme-dot');
+  if (dot) { dot.style.background = t.accent; dot.style.boxShadow = '0 0 6px ' + t.accent; }
+
+  // Update scrollbar dynamically
+  let scrollStyle = document.getElementById('dynamic-scroll-style');
+  if (!scrollStyle) {
+    scrollStyle = document.createElement('style');
+    scrollStyle.id = 'dynamic-scroll-style';
+    document.head.appendChild(scrollStyle);
+  }
+  scrollStyle.textContent = `::-webkit-scrollbar-thumb{background:${t.scrollThumb}!important;}`;
+
+  // Body text color for light themes
+  document.body.style.color = t.text;
+  document.body.style.background = t.bg;
+
+  closeModal('theme-modal');
+  toast('Theme applied: ' + t.name, 'orange');
+  buildThemeGrid();
+
+  // Re-highlight active nav
+  document.querySelectorAll('.ni.on').forEach(el => {
+    el.style.color = t.accent;
+  });
+}
+
+// ══ MICRO ANIMATIONS ══
+(function(){
+  function animateCounters(){
+    document.querySelectorAll('.sn').forEach(el=>{
+      const target=parseInt(el.textContent.replace(/\D/g,''))||0;
+      if(!target||el.dataset.animated) return;
+      el.dataset.animated=1;
+      let cur=0;const step=Math.ceil(target/28);
+      const t=setInterval(()=>{cur=Math.min(cur+step,target);el.textContent=cur;if(cur>=target)clearInterval(t);},18);
+    });
+  }
+  setTimeout(animateCounters,350);
+  const origNav=window.nav;
+  window.nav=function(el,id){origNav(el,id);if(id==='dashboard')setTimeout(animateCounters,280);};
+  const origOpen=window.openModal;
+  window.openModal=function(id){origOpen(id);if(id==='theme-modal')buildThemeGrid();};
+  // Brand mark glow
+  const style=document.createElement('style');
+  style.textContent=`
+    .brand-mark svg rect { animation: brand-glow 3s ease-in-out infinite; }
+    tbody tr { transition: background .1s; }
+    .btn-p { transition: all .18s; }
+  `;
+  document.head.appendChild(style);
+})();
+</script>
+
+<!-- ══ NEW FEATURE JS: Reports, Audit Log, Notifications, Vendor Form ══ -->
+<script>
+// ══════════════════════════════════════════════════
+// CHART.JS — load dynamically
+// ══════════════════════════════════════════════════
+let chartJsLoaded = false;
+function loadChartJs(cb) {
+  if (chartJsLoaded) { cb(); return; }
+  var s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js';
+  s.onload = function(){ chartJsLoaded = true; cb(); };
+  document.head.appendChild(s);
+}
+
+// ══════════════════════════════════════════════════
+// REPORTS & ANALYTICS
+// ══════════════════════════════════════════════════
+var trendChart, statusChart, subChart, timeChart;
+
+function renderReports() {
+  var approved = VENDORS.filter(function(v){ return v.status==='Approved'; }).length;
+  var pending  = VENDORS.filter(function(v){ return v.status==='Pending' || v.status==='Escalated'; }).length;
+  var rejected = VENDORS.filter(function(v){ return v.status==='Rejected'; }).length;
+  var total    = VENDORS.length;
+  var rate     = Math.round((approved / total) * 100);
+
+  var kpiEl = document.getElementById('report-kpis');
+  if (kpiEl) {
+    kpiEl.innerHTML = [
+      {n: total,    l:'Total Vendors',    c:'var(--text)',   d:'↑ 18 this month',  dc:'var(--green)'},
+      {n: approved, l:'Approved',         c:'var(--green)',  d:'Approval rate: '+rate+'%', dc:'var(--green)'},
+      {n: pending,  l:'Pending',          c:'var(--amber)',  d:'Avg 4.2 days pending', dc:'var(--amber)'},
+      {n: rejected, l:'Rejected',         c:'var(--red)',    d:'11 resubmissions', dc:'var(--muted)'},
+    ].map(function(k){
+      return '<div class="sc"><div class="sn" style="color:'+k.c+';">'+k.n+'</div><div class="sl">'+k.l+'</div><div class="sd" style="color:'+k.dc+';">'+k.d+'</div></div>';
+    }).join('');
+  }
+
+  var deptTbody = document.getElementById('dept-report-tbody');
+  if (deptTbody) {
+    deptTbody.innerHTML = DEPTS.map(function(d) {
+      var dv = VENDORS.filter(function(v){ return v.dept===d.name; });
+      var da = dv.filter(function(v){ return v.status==='Approved'; }).length;
+      var dp = dv.filter(function(v){ return v.status==='Pending' || v.status==='Escalated'; }).length;
+      var dr = dv.filter(function(v){ return v.status==='Rejected'; }).length;
+      var cr = dv.length > 0 ? Math.round((da/dv.length)*100) : 0;
+      var days = [3.1, 4.8, 2.9, 5.2, 3.7][DEPTS.indexOf(d)] || 4;
+      return '<tr>'
+        + '<td><span class="dept-tag dt-'+d.color+'">'+d.name+'</span></td>'
+        + '<td style="font-weight:700;">'+dv.length+'</td>'
+        + '<td style="color:var(--green);font-weight:600;">'+da+'</td>'
+        + '<td style="color:var(--amber);">'+dp+'</td>'
+        + '<td style="color:var(--red);">'+dr+'</td>'
+        + '<td style="font-family:var(--mono);font-size:11px;">'+days+' days</td>'
+        + '<td><div style="display:flex;align-items:center;gap:6px;"><div class="prog" style="width:60px;"><div class="pf '+(cr>=80?'pfg':'pfa')+'" style="width:'+cr+'%;"></div></div><span style="font-size:10px;font-weight:700;color:'+(cr>=80?'var(--green)':'var(--amber)')+';">'+cr+'%</span></div></td>'
+        + '</tr>';
+    }).join('');
+  }
+
+  loadChartJs(function() {
+    var accent = getComputedStyle(document.documentElement).getPropertyValue('--orange').trim() || '#FF6B35';
+    var green  = getComputedStyle(document.documentElement).getPropertyValue('--green').trim()  || '#34D399';
+    var amber  = getComputedStyle(document.documentElement).getPropertyValue('--amber').trim()  || '#FBBF24';
+    var red    = getComputedStyle(document.documentElement).getPropertyValue('--red').trim()    || '#F87171';
+    var blue   = getComputedStyle(document.documentElement).getPropertyValue('--blue').trim()   || '#60A5FA';
+    var muted  = getComputedStyle(document.documentElement).getPropertyValue('--muted').trim()  || '#6A7A9B';
+    var border = getComputedStyle(document.documentElement).getPropertyValue('--border').trim() || '#242E44';
+
+    var baseOpts = {
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: muted, font: { size: 10 } }, grid: { color: border } },
+        y: { ticks: { color: muted, font: { size: 10 } }, grid: { color: border } }
+      }
+    };
+
+    // Trend chart
+    var tCtx = document.getElementById('trend-chart');
+    if (tCtx) {
+      if (trendChart) trendChart.destroy();
+      trendChart = new Chart(tCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'],
+          datasets: [
+            { label:'Submitted',  data:[8,12,9,14,11,18,15,22], backgroundColor: accent+'44', borderColor: accent, borderWidth: 1.5, borderRadius: 4 },
+            { label:'Approved',   data:[6,10,7,11,9,14,12,18],  backgroundColor: green+'44',  borderColor: green,  borderWidth: 1.5, borderRadius: 4 },
+            { label:'Rejected',   data:[1,1,2,1,1,2,1,2],       backgroundColor: red+'44',    borderColor: red,    borderWidth: 1.5, borderRadius: 4 },
+          ]
+        },
+        options: Object.assign({}, baseOpts, { plugins: { legend: { display: true, position: 'top', labels: { color: muted, boxWidth: 10, font: { size: 10 } } } } })
+      });
+    }
+
+    // Status pie chart
+    var sCtx = document.getElementById('status-chart');
+    if (sCtx) {
+      if (statusChart) statusChart.destroy();
+      statusChart = new Chart(sCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Approved','Pending','Rejected','Escalated'],
+          datasets: [{ data: [108, 20, 11, 3], backgroundColor: [green, amber, red, accent], borderWidth: 0, hoverOffset: 8 }]
+        },
+        options: { plugins: { legend: { display: false } }, cutout: '68%' }
+      });
+      var legendEl = document.getElementById('status-legend');
+      if (legendEl) {
+        var items = [{l:'Approved',n:108,c:green},{l:'Pending',n:20,c:amber},{l:'Rejected',n:11,c:red},{l:'Escalated',n:3,c:accent}];
+        legendEl.innerHTML = items.map(function(it){
+          return '<div style="display:flex;align-items:center;gap:8px;">'
+            + '<div style="width:10px;height:10px;border-radius:50%;background:'+it.c+';flex-shrink:0;"></div>'
+            + '<span style="font-size:11px;flex:1;">'+it.l+'</span>'
+            + '<span style="font-size:12px;font-weight:700;color:'+it.c+';">'+it.n+'</span>'
+            + '</div>';
+        }).join('');
+      }
+    }
+
+    // Sub bar chart
+    var subCtx = document.getElementById('sub-chart');
+    if (subCtx) {
+      if (subChart) subChart.destroy();
+      subChart = new Chart(subCtx, {
+        type: 'bar',
+        data: {
+          labels: SUBS.filter(function(s){ return s.vendors>0; }).map(function(s){ return s.short; }),
+          datasets: [
+            { label:'Approved', data: SUBS.filter(function(s){return s.vendors>0;}).map(function(s){return s.approved;}), backgroundColor: green+'88', borderRadius: 4 },
+            { label:'Pending',  data: SUBS.filter(function(s){return s.vendors>0;}).map(function(s){return s.pending;}),  backgroundColor: amber+'88', borderRadius: 4 },
+            { label:'Rejected', data: SUBS.filter(function(s){return s.vendors>0;}).map(function(s){return s.rejected;}), backgroundColor: red+'88',   borderRadius: 4 },
+          ]
+        },
+        options: Object.assign({}, baseOpts, { plugins: { legend: { display: true, position: 'top', labels:{ color: muted, boxWidth:10, font:{size:10} } } } })
+      });
+    }
+
+    // Avg time line chart
+    var tCtx2 = document.getElementById('time-chart');
+    if (tCtx2) {
+      if (timeChart) timeChart.destroy();
+      timeChart = new Chart(tCtx2, {
+        type: 'line',
+        data: {
+          labels: ['Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'],
+          datasets: [{
+            label: 'Avg approval days',
+            data: [6.2, 5.8, 7.1, 4.9, 5.5, 4.2, 3.8, 4.1],
+            borderColor: accent, backgroundColor: accent+'22',
+            tension: 0.4, fill: true, pointRadius: 4,
+            pointBackgroundColor: accent, borderWidth: 2
+          }]
+        },
+        options: baseOpts
+      });
+    }
+  });
+}
+
+// ══════════════════════════════════════════════════
+// AUDIT LOG
+// ══════════════════════════════════════════════════
+var AUDIT_ENTRIES = [
+  {ts:'2025-01-16 09:42:18', user:'Rahul Kumar',    role:'Finance SPOC', action:'approval',  entity:'Quantum Freight Solutions', detail:'L2 Approved — vendor code SR-2024-0143 assigned', ip:'10.0.1.42',  ok:true},
+  {ts:'2025-01-16 09:38:05', user:'System',         role:'System',       action:'netsuite',  entity:'SR-2024-0143',              detail:'NetSuite vendor master created — NS ID: 8821',     ip:'—',          ok:true},
+  {ts:'2025-01-16 09:35:11', user:'Rahul Kumar',    role:'Finance SPOC', action:'magic_link',entity:'BlueDart Express Ltd',      detail:'Magic link resent to vendor (2nd attempt)',        ip:'10.0.1.42',  ok:true},
+  {ts:'2025-01-15 16:20:44', user:'Ankit Sharma',   role:'Dept SPOC',    action:'approval',  entity:'Quantum Freight Solutions', detail:'L1 Approved — forwarded to Finance SPOC',          ip:'10.0.2.18',  ok:true},
+  {ts:'2025-01-15 14:55:22', user:'Rahul Kumar',    role:'Finance SPOC', action:'config',    entity:'NetSuite Integration',      detail:'NetSuite sync re-enabled after maintenance',       ip:'10.0.1.42',  ok:true},
+  {ts:'2025-01-15 11:30:09', user:'Rohan Kapoor',   role:'Super Admin',  action:'config',    entity:'Subsidiary',                detail:'Added subsidiary: Flipkart India Pvt Ltd',         ip:'10.0.1.10',  ok:true},
+  {ts:'2025-01-15 10:15:00', user:'System',         role:'System',       action:'magic_link',entity:'Mehta Packaging Co.',       detail:'Vendor onboarding magic link sent to kav@mehta.in',ip:'—',          ok:true},
+  {ts:'2025-01-14 17:45:33', user:'Ravi Kapoor',    role:'AVP Finance',  action:'approval',  entity:'BlueDart Express Ltd',      detail:'AVP override approved — incomplete docs waived',   ip:'10.0.3.5',   ok:false},
+  {ts:'2025-01-14 15:22:10', user:'Rahul Kumar',    role:'Finance SPOC', action:'rejection', entity:'NexGen Packaging LLP',      detail:'Rejected — PAN mismatch with bank account name',   ip:'10.0.1.42',  ok:false},
+  {ts:'2025-01-14 12:10:05', user:'System',         role:'System',       action:'document',  entity:'VRF-2024-0143',             detail:'GST_Certificate_QFS.pdf uploaded — 245KB → Google Drive', ip:'—', ok:true},
+  {ts:'2025-01-13 09:55:18', user:'Ankit Sharma',   role:'Dept SPOC',    action:'login',     entity:'Portal',                    detail:'Login via SSO — session started',                  ip:'10.0.2.18',  ok:true},
+  {ts:'2025-01-13 09:00:00', user:'System',         role:'System',       action:'netsuite',  entity:'All Vendors',               detail:'Scheduled sync: 141 records verified, 1 updated',  ip:'—',          ok:true},
+  {ts:'2025-01-12 16:40:22', user:'Rohan Kapoor',   role:'Super Admin',  action:'config',    entity:'User Management',           detail:'New user added: Priya Menon (Dept SPOC, Logistics)',ip:'10.0.1.10',  ok:true},
+  {ts:'2025-01-12 14:20:55', user:'Deepa Sharma',   role:'Finance SPOC', action:'approval',  entity:'Priya Supply Chain Co.',    detail:'L2 Approved — VRF-2024-0133 completed',            ip:'10.0.1.55',  ok:true},
+  {ts:'2025-01-11 11:05:30', user:'Rahul Kumar',    role:'Finance SPOC', action:'magic_link',entity:'Ravi Kapoor (AVP)',         detail:'AVP escalation magic link sent for BlueDart',      ip:'10.0.1.42',  ok:true},
+];
+
+var auditFiltered = AUDIT_ENTRIES;
+
+function renderAuditLog() {
+  auditFiltered = AUDIT_ENTRIES;
+  renderAuditTable();
+}
+
+function filterAuditLog(q) {
+  var search = (q || document.getElementById('audit-search')?.value || '').toLowerCase();
+  var type   = document.getElementById('audit-type')?.value || '';
+  var user   = document.getElementById('audit-user')?.value || '';
+  auditFiltered = AUDIT_ENTRIES.filter(function(e){
+    if (type && e.action !== type) return false;
+    if (user && e.user !== user) return false;
+    if (search && !(e.user+e.entity+e.detail+e.action).toLowerCase().includes(search)) return false;
+    return true;
+  });
+  renderAuditTable();
+}
+
+function renderAuditTable() {
+  var tbody = document.getElementById('audit-tbody');
+  var countEl = document.getElementById('audit-count');
+  if (countEl) countEl.textContent = '('+auditFiltered.length+' entries)';
+  if (!tbody) return;
+
+  var actionColors = {
+    approval:   ['var(--green-d)','var(--green)'],
+    rejection:  ['var(--red-d)','var(--red)'],
+    magic_link: ['var(--orange-d)','var(--orange)'],
+    login:      ['var(--blue-d)','var(--blue)'],
+    config:     ['var(--purple-d)','var(--purple)'],
+    netsuite:   ['var(--teal-d)','var(--teal)'],
+    document:   ['var(--amber-d)','var(--amber)'],
+  };
+
+  var roleColors = {
+    'Super Admin':'bo','Finance SPOC':'bb','Dept SPOC':'bg','AVP Finance':'bp','System':'bm'
+  };
+
+  tbody.innerHTML = auditFiltered.map(function(e) {
+    var ac = actionColors[e.action] || ['var(--surface2)','var(--muted)'];
+    var rc = roleColors[e.role] || 'bm';
+    var actionLabel = e.action.replace('_',' ').replace(/\b\w/g,function(c){return c.toUpperCase();});
+    return '<tr>'
+      + '<td style="font-family:var(--mono);font-size:10px;color:var(--muted);white-space:nowrap;">'+e.ts+'</td>'
+      + '<td><div style="font-size:11px;font-weight:600;">'+e.user+'</div></td>'
+      + '<td><span class="badge '+rc+'" style="font-size:9px;">'+e.role+'</span></td>'
+      + '<td><span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:99px;font-size:10px;font-weight:600;background:'+ac[0]+';color:'+ac[1]+' ;border:1px solid '+ac[1]+'33;">'+actionLabel+'</span></td>'
+      + '<td style="font-size:11px;font-weight:500;">'+e.entity+'</td>'
+      + '<td style="font-size:10px;color:var(--muted);max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="'+e.detail+'">'+e.detail+'</td>'
+      + '<td style="font-family:var(--mono);font-size:10px;color:var(--muted2);">'+e.ip+'</td>'
+      + '<td><span class="badge '+(e.ok?'bg':'br')+'" style="font-size:9px;">'+(e.ok?'Success':'Action')+'</span></td>'
+      + '</tr>';
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════
+// NOTIFICATIONS
+// ══════════════════════════════════════════════════
+var NOTIFICATIONS = [
+  {id:1, type:'approval', unread:true,  ts:'2 min ago',   icon:'✓', iconBg:'var(--green-d)',  iconC:'var(--green)',  title:'Vendor Approved', body:'Quantum Freight Solutions (VRF-2024-0143) has been approved by Finance SPOC. Vendor code SR-2024-0143 assigned.', action:'View Vendor', actionFn:'openVendorPanel(0)'},
+  {id:2, type:'netsuite', unread:true,  ts:'8 min ago',   icon:'🔷',iconBg:'var(--blue-d)',   iconC:'var(--blue)',   title:'NetSuite Sync Complete', body:'141 vendor records synced successfully. 1 record updated (PAN correction for SwiftLogix Technologies).', action:'View NS Status', actionFn:"nav(null,'integrations')"},
+  {id:3, type:'approval', unread:true,  ts:'1 hr ago',    icon:'⚡',iconBg:'var(--orange-d)', iconC:'var(--orange)', title:'AVP Escalation Required', body:'BlueDart Express Ltd (VRF-2024-0141) has been escalated to Ravi Kapoor (AVP Finance). Missing: ITR Year-2, MSME certificate.', action:'Review', actionFn:'openVendorPanel(1)'},
+  {id:4, type:'system',   unread:true,  ts:'3 hrs ago',   icon:'⚙', iconBg:'var(--purple-d)',iconC:'var(--purple)', title:'New Subsidiary Added', body:'Flipkart India Pvt Ltd has been added by Rohan Kapoor (Super Admin) and is now available for vendor onboarding.', action:null, actionFn:null},
+  {id:5, type:'approval', unread:false, ts:'Yesterday',   icon:'✗', iconBg:'var(--red-d)',    iconC:'var(--red)',    title:'Vendor Rejected', body:'NexGen Packaging LLP (VRF-2024-0131) rejected — PAN mismatch with bank account name. Vendor notified with reason.', action:'View Vendor', actionFn:'openVendorPanel(6)'},
+  {id:6, type:'document', unread:false, ts:'Yesterday',   icon:'📄',iconBg:'var(--amber-d)',  iconC:'var(--amber)',  title:'Documents Uploaded', body:'5 documents uploaded by Quantum Freight Solutions for VRF-2024-0143 and saved to Google Drive.', action:null, actionFn:null},
+  {id:7, type:'netsuite', unread:false, ts:'2 days ago',  icon:'⚠', iconBg:'var(--amber-d)',  iconC:'var(--amber)',  title:'NetSuite Sync Warning', body:'3 vendors had partial sync failures due to missing mandatory fields. Manual review required.', action:"View NS Logs", actionFn:"nav(null,'integrations')"},
+  {id:8, type:'system',   unread:false, ts:'3 days ago',  icon:'👤',iconBg:'var(--blue-d)',   iconC:'var(--blue)',   title:'New User Added', body:'Priya Menon (Dept SPOC — Logistics) has been added by Super Admin. Welcome email sent.', action:null, actionFn:null},
+];
+
+var notifFilter = 'all';
+
+function filterNotifs(type, btn) {
+  notifFilter = type;
+  document.querySelectorAll('[id^="notif-tab-"]').forEach(function(b){
+    b.className = b.id==='notif-tab-'+type ? 'btn btn-p btn-sm' : 'btn btn-gh btn-sm';
+  });
+  renderNotifications();
+}
+
+function markAllRead() {
+  NOTIFICATIONS.forEach(function(n){ n.unread = false; });
+  var badge = document.getElementById('notif-badge');
+  if (badge) badge.textContent = '0';
+  renderNotifications();
+  toast('All notifications marked as read','green');
+}
+
+function renderNotifications() {
+  var list = NOTIFICATIONS;
+  if (notifFilter === 'unread')   list = list.filter(function(n){ return n.unread; });
+  if (notifFilter !== 'all' && notifFilter !== 'unread') list = list.filter(function(n){ return n.type === notifFilter; });
+
+  var unreadCount = NOTIFICATIONS.filter(function(n){ return n.unread; }).length;
+  var allCountEl = document.getElementById('notif-all-count');
+  if (allCountEl) allCountEl.textContent = unreadCount;
+  var badge = document.getElementById('notif-badge');
+  if (badge) badge.textContent = unreadCount > 0 ? unreadCount : '0';
+
+  var container = document.getElementById('notifications-list');
+  if (!container) return;
+
+  if (list.length === 0) {
+    container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);font-size:13px;">No notifications</div>';
+    return;
+  }
+
+  container.innerHTML = list.map(function(n) {
+    return '<div style="background:var(--surface);border:1px solid '+(n.unread?'var(--orange)':'var(--border)')+';border-radius:var(--rl);padding:14px 16px;display:flex;gap:12px;transition:.15s;cursor:pointer;position:relative;"'
+      + ' onmouseover="this.style.borderColor=\'var(--muted2)\'" onmouseout="this.style.borderColor=\''+(n.unread?'var(--orange)':'var(--border)')+'\'"'
+      + ' onclick="NOTIFICATIONS.find(function(x){return x.id==='+n.id+'}).unread=false;'+(n.actionFn?n.actionFn+';':'')+'">'
+      + (n.unread ? '<div style="position:absolute;top:12px;right:12px;width:8px;height:8px;border-radius:50%;background:var(--orange);"></div>' : '')
+      + '<div style="width:36px;height:36px;border-radius:9px;background:'+n.iconBg+';color:'+n.iconC+';display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;">'+n.icon+'</div>'
+      + '<div style="flex:1;min-width:0;">'
+      + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;">'
+      + '<div style="font-size:12px;font-weight:600;'+(n.unread?'color:var(--text)':'color:var(--muted)')+';">'+n.title+'</div>'
+      + '<div style="font-size:10px;color:var(--muted2);flex-shrink:0;margin-left:10px;">'+n.ts+'</div>'
+      + '</div>'
+      + '<div style="font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:'+(n.action?'8':'0')+'px;">'+n.body+'</div>'
+      + (n.action ? '<button class="btn btn-gh btn-sm" style="font-size:10px;" onclick="event.stopPropagation();'+n.actionFn+'">'+n.action+' →</button>' : '')
+      + '</div></div>';
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════
+// VENDOR REGISTRATION FORM
+// ══════════════════════════════════════════════════
+var FORM_REQUIRED = ['vf-name','vf-contact','vf-mobile','vf-email','vf-entity','vf-desc','vf-street','vf-city','vf-state','vf-pin','vf-pan','vf-aadhar','vf-gst','vf-einv','vf-cin','vf-msme','vf-itr','vf-acname','vf-bank','vf-accno','vf-ifsc'];
+
+var REQUIRED_DOCS = [
+  {id:'doc-gstn',   name:'GSTN Certificate',           required:true},
+  {id:'doc-pan',    name:'PAN Card (scanned)',          required:true},
+  {id:'doc-cheque', name:'Cancelled Cheque',            required:true},
+  {id:'doc-msme',   name:'MSME Certificate',            required:false, note:'If registered'},
+  {id:'doc-vrf',    name:'VRF Signed Copy',             required:true},
+  {id:'doc-regcert',name:'Registration Certificate',   required:true},
+];
+
+var uploadedDocs = {};
+
+function initVendorForm() {
+  var stepDots = document.getElementById('form-step-dots');
+  if (stepDots) {
+    var steps = ['Basic Info','Address','Tax & Compliance','Bank Details','Documents'];
+    stepDots.innerHTML = steps.map(function(s,i){
+      return '<span style="font-size:10px;color:var(--muted);display:flex;align-items:center;gap:4px;">'
+        + '<span style="width:16px;height:16px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--muted2);">'+(i+1)+'</span>'
+        + s + '</span>';
+    }).join('<span style="color:var(--border);font-size:10px;margin:0 2px;">›</span>');
+  }
+
+  var docList = document.getElementById('doc-upload-list');
+  if (docList) {
+    docList.innerHTML = REQUIRED_DOCS.map(function(d) {
+      return '<div style="display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--r);background:var(--surface2);border:1px solid var(--border);">'
+        + '<div style="width:32px;height:32px;border-radius:7px;background:var(--orange-d);display:flex;align-items:center;justify-content:center;font-size:13px;">📄</div>'
+        + '<div style="flex:1;"><div style="font-size:11px;font-weight:500;">'+d.name+(d.required?'  <span style=\'color:var(--orange);\'>*</span>':'')+'</div>'
+        + '<div style="font-size:10px;color:var(--muted);">'+(d.note||'PDF or image, max 10MB')+'</div></div>'
+        + '<div id="'+d.id+'-status" style="font-size:11px;color:var(--muted2);">Not uploaded</div>'
+        + '<button class="btn btn-gh btn-sm" onclick="simulateUpload(\''+d.id+'\',\''+d.name+'\')">Upload</button>'
+        + '</div>';
+    }).join('');
+  }
+}
+
+function simulateUpload(docId, docName) {
+  uploadedDocs[docId] = true;
+  var statusEl = document.getElementById(docId+'-status');
+  if (statusEl) { statusEl.textContent = '✓ Uploaded'; statusEl.style.color = 'var(--green)'; }
+  var count = Object.keys(uploadedDocs).length;
+  var countEl = document.getElementById('doc-upload-count');
+  if (countEl) countEl.textContent = count+' / '+REQUIRED_DOCS.length+' uploaded';
+  toast(docName+' uploaded successfully','green');
+  updateFormProgress();
+}
+
+function updateFormProgress() {
+  var filled = FORM_REQUIRED.filter(function(id){
+    var el = document.getElementById(id);
+    return el && el.value && el.value.trim().length > 0;
+  }).length;
+  var docCount = Object.keys(uploadedDocs).length;
+  var authCheck = document.getElementById('vf-auth-check')?.checked ? 1 : 0;
+  var total = FORM_REQUIRED.length + REQUIRED_DOCS.filter(function(d){return d.required;}).length + 1;
+  var done  = filled + Math.min(docCount, REQUIRED_DOCS.filter(function(d){return d.required;}).length) + authCheck;
+  var pct   = Math.round((done / total) * 100);
+  var progEl = document.getElementById('form-prog');
+  var pctEl  = document.getElementById('form-pct');
+  if (progEl) { progEl.style.width = pct+'%'; progEl.className = 'pf '+(pct>=80?'pfg':'pfa'); }
+  if (pctEl)  { pctEl.textContent = pct+'%'; pctEl.style.color = pct>=80?'var(--green)':'var(--amber)'; }
+}
+
+function handleMSME(val) {
+  var banner = document.getElementById('msme-autodoc-banner');
+  if (banner) banner.style.display = val==='yes' ? 'block' : 'none';
+  updateFormProgress();
+}
+
+function submitVendorForm() {
+  var auth = document.getElementById('vf-auth-check')?.checked;
+  if (!auth) { toast('Please confirm the declaration checkbox before submitting','amber'); return; }
+  var name = document.getElementById('vf-name')?.value;
+  if (!name) { toast('Please fill in vendor name before submitting','amber'); return; }
+  toast('✓ Registration submitted — you will receive a confirmation email shortly','green');
+}
+
+// ── init form when view loads ──
+var _origNav = window.nav;
+window.nav = function(el, id) {
+  _origNav(el, id);
+  if (id === 'vendor_form') { setTimeout(initVendorForm, 50); }
+  if (id === 'notifications') { renderNotifications(); }
+};
+
+// init notification badge on load
+setTimeout(function(){
+  var badge = document.getElementById('notif-badge');
+  if (badge) badge.textContent = NOTIFICATIONS.filter(function(n){ return n.unread; }).length;
+}, 500);
+</script>
+</body>
+</html>
